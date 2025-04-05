@@ -1,76 +1,12 @@
-# FE
-📦 1. Vite – 초고속 프론트엔드 개발 빌드 도구
+# React + Vite
 
-✅ 하는 역할
-	•	로컬 개발 서버 실행 (npm run dev)
-	•	파일 수정 시 자동으로 빠르게 반영 (HMR)
-	•	실제 배포 시 빌드 (npm run build)
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-✅ 왜 좋은가?
-	•	CRA보다 훨씬 빠름
-	•	ESM 기반이라 속도와 확장성이 좋음
-	•	React, Vue, Svelte 등 프레임워크와 궁합이 좋음
+Currently, two official plugins are available:
 
-⸻
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-⚛️ 2. React – 사용자 인터페이스를 구성하는 프론트엔드 라이브러리
+## Expanding the ESLint configuration
 
-✅ 하는 역할
-	•	사용자와 상호작용하는 UI 구성 (<ChatBot />, <Button /> 같은 컴포넌트 기반)
-	•	상태관리 (useState, useEffect)
-	•	사용자 입력, 채팅 목록 렌더링 등 처리
-
-✅ 왜 좋은가?
-	•	UI를 컴포넌트 단위로 나눠서 관리 가능
-	•	확장성과 커뮤니티가 매우 큼
-
-⸻
-
-🌬️ 3. Tailwind CSS – 유틸리티 기반 CSS 프레임워크
-
-✅ 하는 역할
-	•	bg-background, rounded-lg, p-4 같은 짧은 클래스명으로 빠르게 스타일 적용
-	•	CSS를 따로 쓰지 않고 HTML 안에서 바로 스타일링 가능
-	•	미디어쿼리, 다크모드, 커스텀 컬러, 반응형 등 모두 지원
-
-✅ 왜 좋은가?
-	•	디자인 시스템을 코드로 만들 수 있음
-	•	빠르고 생산성이 매우 높음
-	•	클래스 조합만으로도 완성도 있는 UI 가능
-
-⸻
-
-💎 4. shadcn/ui – Tailwind 기반의 고급 UI 컴포넌트 라이브러리
-
-✅ 하는 역할
-	•	버튼, 카드, 입력창 등 디자인이 잘 잡힌 컴포넌트 제공
-	•	Tailwind 기반이기 때문에 커스터마이징도 쉬움
-	•	다크모드, 애니메이션, 폰트, 색상 테마 등 기본 제공
-
-✅ 왜 좋은가?
-	•	예쁘고 실용적인 UI를 빠르게 구현 가능
-	•	컴포넌트 하나씩 설치 가능 → 프로젝트 크기에 맞게 최적화
-	•	완전 오픈 소스 기반 (디자인까지 공개됨)
-
-⸻
-
-💡 5. JSConfig + Vite Alias – 편리한 경로 설정
-
-✅ 하는 역할
-	•	@/components/Button처럼 절대 경로 import 가능
-	•	../../../ 같은 상대 경로 지옥에서 탈출!
-
-⸻
-
-🎯 6. Vercel – 프론트엔드 서버 배포 플랫폼
-
-✅ 하는 역할
-	•	GitHub에 push만 해도 자동으로 배포!
-	•	https 자동, 도메인 설정 쉬움
-	•	React + Vite 프로젝트와 궁합 최고
-
-✅ 배포 방법 (요약)
-	1.	GitHub에 저장소 푸시
-	2.	vercel.com에서 새 프로젝트 연결
-	3.	프레임워크: Vite
-	4.	배포 완료 → https://your-project.vercel.app 주소로 접속 가능
+If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
