@@ -31,6 +31,7 @@ export default function AdminLayout() {
           <Link to="/admin/hotels" className="hover:underline">호텔 관리</Link>
           <Link to="/admin/reservations" className="hover:underline">예약 내역</Link>
           <Link to="/admin/chatbot-logs" className="hover:underline">챗봇 로그</Link>
+          <Link to="/admin/policies" className="hover:underline">정책 관리</Link>
         </nav>
         <Button variant="outline" className="mt-6" onClick={handleLogout}>
           로그아웃
