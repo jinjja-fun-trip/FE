@@ -1,6 +1,14 @@
+/*Tailwind 등 전역 스타일 설정 (색깔 커스텀 설정 여기서 가능)*/
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
 body {
   margin: 0;
   font-family: sans-serif;
@@ -8,7 +16,7 @@ body {
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 210 16% 98%;
     --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
     --card-foreground: 240 10% 3.9%;
@@ -66,7 +74,28 @@ body {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+}
+/*스크롤바 숨기기용 클래스*/
+
+@layer utilities {
+  .animate-fadeIn {
+    animation: fadeIn 0.4s ease-in-out both;
+  }
+
+  @keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(8px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+}
+.hide-scrollbar::-webkit-scrollbar {
+  width:0;
+  height:0;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

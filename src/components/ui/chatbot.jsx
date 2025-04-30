@@ -11,13 +11,15 @@ export default function ChatBot() {
 
   const sendMessage = () => {
     if (input.trim() === "") return
-    const newMessages = [...messages, { from: "user", text: input }]
-    setMessages(newMessages)
+
+    const userMessage = { from: "user", text: input }
+    const botReply = { from: "bot", text: `제가 방금 받은 메시지는: ${input}` }
+
+    setMessages((prev) => [...prev, userMessage])
     setInput("")
 
-    // 봇 응답 예시 (실제 연결은 추후)
     setTimeout(() => {
-      setMessages(prev => [...prev, { from: "bot", text: "제가 방금 받은 메시지는: " + input }])
+      setMessages((prev) => [...prev, botReply])
     }, 600)
   }
 
@@ -32,12 +34,13 @@ export default function ChatBot() {
               className={`flex ${msg.from === "user" ? "justify-end" : "justify-start"}`}
             >
               <div
-                className={`rounded-2xl px-4 py-2 max-w-xs break-words ${
+                className={`rounded-2xl px-4 py-2 max-w-xs break-words shadow-sm ${
                   msg.from === "user"
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-muted text-muted-foreground"
+                    ? "bg-lime-200 text-black"
+                    : "bg-green-100 text-black"
                 }`}
               >
+                {msg.from === "bot" ? "🤖 " : "🙋‍♂️ "}
                 {msg.text}
               </div>
             </div>

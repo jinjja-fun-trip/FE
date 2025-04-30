@@ -1,3 +1,4 @@
+//카드 스타일 컴포넌트 (리스트 형태 아이템 등)
 import * as React from "react"
 
 import { cn } from "@/lib/utils"

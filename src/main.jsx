@@ -1,4 +1,4 @@
-// src/main.jsx
+// ReactDOM 렌더링 스타트 파일
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";

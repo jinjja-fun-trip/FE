@@ -1,3 +1,4 @@
+//호텔 관리 페이지(등록/수정/삭제)
 export default function Hotels() {
     return (
       <div>

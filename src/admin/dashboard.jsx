@@ -1,3 +1,4 @@
+///어드민 대시보드 메인(요약 통계 등)
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";

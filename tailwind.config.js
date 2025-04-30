@@ -7,12 +7,16 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Noto Sans KR', 'Inter', 'sans-serif'],
+      },
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
       },
       colors: {
+        // 기존 변수 기반 시스템 유지
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {
@@ -53,6 +57,28 @@ export default {
           '4': 'hsl(var(--chart-4))',
           '5': 'hsl(var(--chart-5))',
         },
+
+        // 🎨 내가 추가한 고정 컬러 팔레트
+        theme: {
+          primary: '#3BAFDA',
+          secondary: '#1C3F5E',
+          accent: '#F5B041',
+          success: '#27AE60',
+          danger: '#E74C3C',
+          warning: '#E67E22',
+          info: '#3498DB',
+        }
+      },
+
+      // 애니메이션 추가
+      keyframes: {
+        bounceSmall: {
+          '0%, 100%': { transform: 'translateY(-2%)' },
+          '50%': { transform: 'translateY(0)' },
+        },
+      },
+      animation: {
+        'bounce-small': 'bounceSmall 1s infinite',
       },
     },
   },

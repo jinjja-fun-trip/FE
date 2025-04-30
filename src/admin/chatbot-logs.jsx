@@ -1,3 +1,4 @@
+//챗봇 대화 기록(logs) 보는 페이지
 export default function ChatbotLogs() {
     return (
       <div>

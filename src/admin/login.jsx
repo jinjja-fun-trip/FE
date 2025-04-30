@@ -1,3 +1,4 @@
+//어드민용 로그인 화면
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";

@@ -1,3 +1,4 @@
+//인풋 박스 컴포넌트 (로그인 입력창, 예약 입력창 등)
 import * as React from "react"
 
 import { cn } from "@/lib/utils"

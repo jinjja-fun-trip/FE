@@ -1,4 +1,4 @@
-// src/admin/AdminLayout.jsx
+// 어드민 전체 레이아웃(사이드바, 헤더 등 기본 뼈대) 관리
 import { useEffect } from "react";
 import { useNavigate, Outlet, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";

@@ -1,3 +1,4 @@
+//버튼 색깔, 모양 수정 여기서 함
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva } from "class-variance-authority";

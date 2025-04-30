@@ -1,3 +1,4 @@
+//예약 관리 페이지(사용자 예약 내역 보기)
 export default function Reservations() {
     return (
       <div>

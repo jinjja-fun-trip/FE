@@ -1,3 +1,4 @@
+//정책 관리 페이지(수화물 규정, 환불 규정 등)
 export default function Policies() {
     return (
       <div>
