@@ -1,4 +1,3 @@
-// 사용자 로그인 페이지
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
@@ -6,19 +5,33 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
 export default function UserLogin() {
-  const [id, setId] = useState("");
+  const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleLogin = () => {
-    // localStorage에 저장된 사용자 계정 정보 가져오기
-    const storedPw = localStorage.getItem(`user-${id}`);
-    if (storedPw && storedPw === pw) {
-      localStorage.setItem("user-auth", "true");
-      navigate("/chat"); // 로그인 성공 시 챗봇 페이지로 이동
-    } else {
-      setError("아이디 또는 비밀번호가 틀렸습니다.");
+  const handleLogin = async () => {
+    try {
+      const res = await fetch("http://localhost:8000/users/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password: pw }),
+      });
+
+      if (!res.ok) {
+        const errData = await res.json();
+        throw new Error(errData.detail || "로그인 실패");
+      }
+
+      const data = await res.json();
+      console.log("로그인 성공:", data);
+
+      // 로그인 상태를 로컬에 저장 (예: JWT 토큰)
+      localStorage.setItem("user-auth", JSON.stringify(data));
+      alert(`${data.name}님 환영합니다!`);
+      navigate("/chat");
+    } catch (err) {
+      setError(err.message);
     }
   };
 
@@ -26,11 +39,12 @@ export default function UserLogin() {
     <div className="h-screen flex items-center justify-center bg-gray-100">
       <Card className="w-[400px] shadow-xl">
         <CardContent className="p-6 space-y-4">
-          <h2 className="text-2xl font-bold text-center">사용자 로그인</h2>
+          <h2 className="text-2xl font-bold text-center">로그인</h2>
           <Input
-            placeholder="아이디"
-            value={id}
-            onChange={(e) => setId(e.target.value)}
+            type="email"
+            placeholder="이메일"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <Input
             type="password"

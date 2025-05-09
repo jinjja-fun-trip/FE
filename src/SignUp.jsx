@@ -1,31 +1,38 @@
-// 사용자 회원가입 페이지
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
-export default function SignUp() {
-  const [id, setId] = useState("");
+export default function UserRegister() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
-  const [confirmPw, setConfirmPw] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleSignUp = () => {
-    if (id === "" || pw === "") {
-      setError("아이디와 비밀번호를 입력해주세요.");
-      return;
-    }
-    if (pw !== confirmPw) {
-      setError("비밀번호가 일치하지 않습니다.");
-      return;
-    }
+  const handleRegister = async () => {
+    try {
+      const res = await fetch("http://localhost:8000/users/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password: pw }),
+      });
 
-    // 회원 정보 저장 (임시로 localStorage 사용)
-    localStorage.setItem(`user-${id}`, pw);
-    alert("회원가입이 완료되었습니다!");
-    navigate("/"); // 로그인 페이지로 이동
+      const data = await res.json(); // ✅ 먼저 JSON 파싱
+
+      if (!res.ok) {
+        console.error("⚠️ 백엔드 에러 응답:", data);
+        throw new Error(data.detail || "회원가입 실패");
+      }
+
+      console.log("✅ 회원가입 완료:", data);
+      alert(`${data.name}님 회원가입 완료!`);
+      navigate("/login");
+    } catch (err) {
+      console.error("❌ 프론트 처리 에러:", err.message);
+      setError("❌ " + err.message);
+    }
   };
 
   return (
@@ -34,9 +41,14 @@ export default function SignUp() {
         <CardContent className="p-6 space-y-4">
           <h2 className="text-2xl font-bold text-center">회원가입</h2>
           <Input
-            placeholder="아이디"
-            value={id}
-            onChange={(e) => setId(e.target.value)}
+            placeholder="이름"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <Input
+            placeholder="이메일"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <Input
             type="password"
@@ -44,14 +56,8 @@ export default function SignUp() {
             value={pw}
             onChange={(e) => setPw(e.target.value)}
           />
-          <Input
-            type="password"
-            placeholder="비밀번호 확인"
-            value={confirmPw}
-            onChange={(e) => setConfirmPw(e.target.value)}
-          />
           {error && <p className="text-red-500 text-sm">{error}</p>}
-          <Button className="w-full" onClick={handleSignUp}>
+          <Button className="w-full" onClick={handleRegister}>
             회원가입
           </Button>
         </CardContent>

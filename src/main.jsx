@@ -25,6 +25,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="/" element={<Login />} />
         <Route path="/chat" element={<App />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/login" element={<Login />} />
 
         {/* 어드민 로그인 */}
         <Route path="/admin/login" element={<AdminLogin />} />
