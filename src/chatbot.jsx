@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Send } from "lucide-react"
 import PriceTrendChart from "./components/ui/PriceTrendChart";
+import DestinationCard from "./components/ui/DestinationCard"; 
 export default function ChatBot() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
@@ -93,7 +94,7 @@ export default function ChatBot() {
     const newMessages = [...messages, userMessage];
     setMessages(newMessages);
   
-    try {
+    /*try {
       const res = await fetch("http://localhost:8000/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -104,9 +105,64 @@ export default function ChatBot() {
     } catch {
       setMessages([...newMessages, { type: "bot", text: " 에러가 발생했어요." }]);
     }
-  
+        
     setInput("");
   };
+  */
+    // ✅ 여기에 테스트용 카드 응답 추가
+    if (input.includes("사진") || input.includes("추천")) {
+      const fakeCardResponse = {
+        type: "bot",
+        intent: "dest_reco",
+        cards: [
+          {
+            city: "제주도",
+            score: 0.9,
+            photos: [
+              "https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photo_reference=AXQCQNSgMPc9eSpEVWfHk4mQooj3TAJnXVMpzUYFL_z-hNBVCQL-LjNr23S6MZa3oG5tjK2tDlqozEkeuMFCMDgArAIql0y9vBVGaxeoVI-u4QbhIyR2ODcON4FzoP6W069J_jNgDMUxcecAuLeEHyuJnCFjembINhqkwoJZIEM9zG8FHwzLkity4UcAIuI3bssyXw5-0eeULMJncKsSNS7mUa9WeW59dEx5WswFdmLekvQuTXTsrL05RZzya6Q-UO13msLKZ4bwzoQ6WbgwykSm8VWLFGaFAK07AaTpvpcMIlOoUtfQP66VckXYvZi8INZfBzObfojNdoR1XqwOMh4uWuQc1UgrtaQrel_EVD-y8yacQ8s35_6WBo_KzwYCQl68PITjvsP_lcai2UtzEQ9DUXnjZENVqG2_rBB4LayX-EzPX4GUKSsXlTNxxN99MjaHbg2wFrMQPQg9B1Wf1MxgCBlaweDCrIHl4uTq2qYSbUvxszdCTeXk3II-wRp7InBMqKTufsguZDsbDAa8iUS7EA5wn8lC2vdXgFqwJhF48NIT7zMRHrMUZmv0pmGG2WOYNb2pbVT7PO6J6FrZdNDDpA13nKvJw54dpjfLzDUEbwAdZvrlkGK6wCOM9KicrYnG2Wc7IA&key=YOUR_API_KEY"
+            ],
+            description: "제주도는 한라산과 성산 일출봉 등 아름다운 자연 경관이 많아 인스타그램 사진 찍기에 최적의 장소입니다. 최근에는 '제주 카페 투어'가 인기이며, 다양한 테마의 카페들이 인기를 끌고 있습니다.",
+            hashtags: ["#korea", "#instagrammable", "#travelphotography"]
+          },
+          {
+            city: "산토리니",
+            score: 0.95,
+            photos: [
+              "https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photo_reference=AXQCQNSZu4yqQNDcBT23ko3YXCY0pILJm7e-pjp8-UbBpocqL7ZvmEZPYgx8Redl4GA1GOprs7-qGLnAGbbY5tAu95ghZnxw5QiI24lLSps392p2afb3Az3bF4ezwoeE53C4F26meiLpWRpvkxaWUKinrYQv9VGmUeGzCqbYgEG2vcJtBO19BF19ln8c2wN_b73HkV8LJBqoS8guZk1xm8lybAkcrPkel9RiUCWYEsah0Ti4yyo8_wjafEsk7WHRAmi1Y6jBO7ZcLJL8Xw1AgGOcNJuhUtCnUKVYNCXSHipn80IP9BtqD9ZB8d6LsQIVsDfAWyOBMkCLHxcG2u07HF8w3xeG9vYeoVDdJXVIZs0s9AobFavmcYD5Q4w28CrtEs95dc4-B7OlR_T8X5VSl12MI3m2TSoR-_Y0t5FRj6_cNUZgIOpoI8Li1uy9An8iklr6btnZGfteccOVbWfmkNMzYtCGiAhaZnXWP7NUEn5OxgLFhvntAQSuJ3hsb35EodCAoOVNbFs-YmzcTm5-ujof1b3amveHzldN0qJMqm8DX_SxeQJVO2KPGI59Mb0PWptinxa39njbFV7JVSzBvz3IDo6LPy-Z2UM5ddyAfxvmL7YHbz1RYAB1cNR1XduP_mqsgAAEAHus&key=YOUR_API_KEY"
+            ],
+            description: "산토리니는 하얀 집과 파란 지붕의 전경이 유명하여 인스타그램에서 많은 사랑을 받고 있습니다. 최근에는 '산토리니 일몰 투어'가 인기를 끌고 있습니다.",
+            hashtags: ["#greece", "#sunset", "#wanderlust"]
+          },
+          {
+            city: "발리",
+            score: 0.9,
+            photos: [
+              "https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photo_reference=AXQCQNRTUe4t9ySKKYwmyzKlYRvSdfJTtxpctoxW4O4NWp1JfyAPCIvRE51D2GweU-5EbnGSJ10MzQ3J1YnXaxvlwWM0l8ZHYb-6SFRoRfuCbZJfCjHU2g7FFyfZlgk-AMelVi6T0VeaYCf2mvXaC2lqPyz_1tDSbJxoBhEkzF1-3DFrhAhITljcS2rkCODOvJlF_OshinXW1MwuLw9wONJidU4Lc4qGdji4SCEYjz7ThkClQgNkLtvj1RKB_vQx8ZuK1JxCh_-kZQAahrDNIkfe_kmPTaiUCBGWpJ6YnOZJqK31L7OUd11KZ1wcsCr4I3uE83BPO48aJTKk3rkTm3aGnBNkLErDHzmSiNGRYwL2-ZcrMLnjC-PZCfv2mzOBnBq5tyH2lelK5L_DxiX3VAc2EiNexWP5CLZyrp7kwvOC5rMuoRDsc_kzhPKCPuHk0TnrpwOuVwUTgFxrBFuJBKtQNQf04t-JH8mG3vaH5dL7LZahXHHNqIkskBxI-QSiWCVaOrf5D6MIjwUYkpyrQlSuERGMkyEiNAa1NgNFrJ_p0nSFLvf7pGGxnykXVnCKmZGaHTqbEPxeUtJLVW1QnHcgBFHZbmK-3I7aY3gw_-Ba2lJaoJP_yET8_UTEdnCGX2DVv_JhfGOX&key=AIzaSyBui9x4GuJQ7cTUyuZd9riZbrye-BJr4Xo"
+            ],
+            description: "발리는 아름다운 해변과 테라스 정원이 있는 논밭으로 유명하여 인스타그램 사진 찍기에 최적입니다. 최근에는 '발리 스윙'이 많은 관광객들에게 인기를 끌고 있습니다.",
+            hashtags: ["#indonesia", "#beachlife", "#foodie"]
+          }
+        ],
+        message: "인스타그램 핫플레이스 여행지로 제주도, 산토리니, 발리를 추천합니다. 각 도시마다 독특한 매력과 최근 인기 있는 트렌드가 있습니다."
+      };
+    
+      console.log("🔥 카드 응답 삽입!");
+      console.log(fakeCardResponse);
+    
+      setMessages([
+        ...newMessages,
+        fakeCardResponse,
+        {
+          type: "bot",
+          text: fakeCardResponse.message
+        }
+      ]);
+    
+      setInput("");
+      return;
+    }
+  }
+
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") sendMessage();
@@ -256,13 +312,27 @@ export default function ChatBot() {
                   {typeof msg.text === "string" || Array.isArray(msg.text)
                     ? msg.type === "bot" ? "🤖 " : "🙋‍♂️ " : null}
 
-                  {/* 텍스트 or 컴포넌트 분기 */}
-                  {Array.isArray(msg.text)
-                    ? msg.text.map((line, i) => <p key={i}>{line}</p>)
-                    : typeof msg.text === "string"
-                    ? msg.text
-                    : <div className="w-full">{msg.text}</div>}
-
+                  {/* ✨ 카드 분기 추가 */}
+                  {msg.intent === "dest_reco" ? (
+                    <div className="flex flex-wrap gap-4">
+                      {msg.cards.map((card, i) => (
+                        <DestinationCard
+                          key={i}
+                          city={card.city}
+                          score={card.score}
+                          imageUrl={card.photos[0]}
+                          description={card.description}
+                          hashtags={card.hashtags}
+                        />
+                      ))}
+                    </div>
+                  ) : Array.isArray(msg.text) ? (
+                    msg.text.map((line, i) => <p key={i}>{line}</p>)
+                  ) : typeof msg.text === "string" ? (
+                    msg.text
+                  ) : (
+                    <div className="w-full">{msg.text}</div>
+                  )}
                   {/* 꼬리 */}
                   <div
                     className={`absolute bottom-0 w-3 h-3 ${

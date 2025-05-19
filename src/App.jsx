@@ -2,6 +2,7 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ChatBot from "./chatbot";
+import RecommendedCards from "./components/ui/RecommendedCards";
 
 function App() {
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ function App() {
       <ChatBot />
     </main>
   );
+
 }
 
 export default App;
