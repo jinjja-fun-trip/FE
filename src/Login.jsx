@@ -53,7 +53,7 @@ export default function UserLogin() {
             onChange={(e) => setPw(e.target.value)}
           />
           {error && <p className="text-red-500 text-sm">{error}</p>}
-          <Button className="w-full" onClick={handleLogin}>
+          <Button className="w-full bg-sky-500 hover:bg-sky-600" onClick={handleLogin}>
             로그인
           </Button>
           <p className="text-center text-sm text-gray-600 mt-2">

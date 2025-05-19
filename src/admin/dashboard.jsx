@@ -23,7 +23,7 @@ export default function AdminDashboard() {
     <div className="p-8 space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold">관리자 대시보드</h1>
-        <Button onClick={handleLogout}>로그아웃</Button>
+        {/*<Button onClick={handleLogout}>로그아웃</Button>*/}
       </div>
       <p>환영합니다! 여기는 관리자 메인 화면입니다.</p>
     </div>

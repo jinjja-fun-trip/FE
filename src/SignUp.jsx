@@ -57,7 +57,7 @@ export default function UserRegister() {
             onChange={(e) => setPw(e.target.value)}
           />
           {error && <p className="text-red-500 text-sm">{error}</p>}
-          <Button className="w-full" onClick={handleRegister}>
+          <Button className="w-full bg-sky-500 hover:bg-sky-600" onClick={handleRegister}>
             회원가입
           </Button>
         </CardContent>
