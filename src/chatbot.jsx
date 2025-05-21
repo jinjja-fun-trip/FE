@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Send } from "lucide-react"
-import PriceTrendChart from "./components/ui/PriceTrendChart";
-import DestinationCard from "./components/ui/DestinationCard"; 
+import { Send } from "lucide-react" //전송 아이콘
+import PriceTrendChart from "./components/ui/PriceTrendChart"; //가격 추이 그래프 컴포넌트
+import DestinationCard from "./components/ui/DestinationCard"; //목적지 카드 컴포넌트
 export default function ChatBot() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
@@ -26,6 +26,7 @@ export default function ChatBot() {
   });
   const handleLogout = () => {
     localStorage.removeItem("user-auth");
+    setMessages([]); // ✅ 메시지 초기화
     window.location.href = "/";
   };
   const [priceTrendData, setPriceTrendData] = useState([]);
@@ -47,121 +48,210 @@ export default function ChatBot() {
     };
     setMessages([welcomeMessage]);
   }, []);
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user-auth"));
+    const userId = user?.id;
+  
+    fetch(`http://localhost:8000/chat/message/${userId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        const restored = data.map((msg) => {
+          const role = msg.user_id === userId ? "user" : "bot";
+  
+          if (msg.answer?.intent === "DEST_RECOMMEND") {
+            return {
+              type: "bot",
+              intent: "dest_reco",
+              cards: msg.answer.contents.cards,
+            };
+          }
+  
+          if (msg.answer?.contents?.chartData) {
+            return {
+              type: "bot",
+              text: "📊 가격 추이 차트는 새로 조회 시 표시됩니다.",
+              isWide: true,
+            };
+          }
+  
+          return {
+            type: role,
+            text: role === "user" ? msg.message : msg.answer?.contents?.message || "🤖 응답 없음",
+          };
+        });
+  
+        const welcome = {
+          type: "bot",
+          text: "안녕하세요! 챗봇 예약 플래너입니다.\n항공권이나 호텔 예약, 조회, 취소 등 원하시는 기능을 선택해주세요 😊"
+        };
+        setMessages([welcome, ...restored]);
+      })
+      .catch((err) => console.error("❌ 메시지 불러오기 실패", err));
+  }, []);
 
-  const handleOptionClick = (option) => {
+  const handleOptionClick = async (option) => {
     setShowFlightForm(false);
-    if (option === "항공권 조회") {
-      setShowFlightForm(true);
-      setShowOptions(false);
-      setMessages((prev) => [
-        ...prev,
-        { type: "user", text: option },
-        { type: "bot", text: "출발지, 도착지, 출발 날짜, 인원을 입력해주세요." },
-      ]);
-      return;
-    }
-
+    const user = JSON.parse(localStorage.getItem("user-auth"));
+    const userId = user?.id;
+  
     let response = "";
-    switch (option) {
-      case "예약 조회":
-        response = "현재 예약 내역을 조회합니다. 이름이나 예약번호를 입력해주세요.";
-        break;
-      case "예약하기":
-        response = "항공권 또는 호텔 예약을 도와드릴게요. 어떤 걸 예약하시겠어요?";
-        break;
-      case "예약 취소":
-        response = "예약을 취소하시겠어요? 예약 번호를 입력해주세요.";
-        break;
-      case "기타":
-        response = "문의하실 내용을 입력해주세요. 가능한 한 빨리 도와드릴게요!";
-        break;
-      default:
-        response = "알 수 없는 선택입니다.";
+  
+    if (option === "항공권 조회") {
+      response = "출발지, 도착지, 출발 날짜, 인원을 입력해주세요.";
+      setShowFlightForm(true);
+    } else {
+      switch (option) {
+        case "예약 조회":
+          response = "현재 예약 내역을 조회합니다. 이름이나 예약번호를 입력해주세요.";
+          break;
+        case "예약하기":
+          response = "항공권 또는 호텔 예약을 도와드릴게요. 어떤 걸 예약하시겠어요?";
+          break;
+        case "예약 취소":
+          response = "예약을 취소하시겠어요? 예약 번호를 입력해주세요.";
+          break;
+        case "기타":
+          response = "문의하실 내용을 입력해주세요. 가능한 한 빨리 도와드릴게요!";
+          break;
+        default:
+          response = "알 수 없는 선택입니다.";
+      }
     }
-
+  
+    // 화면에 추가
     setMessages((prev) => [
       ...prev,
       { type: "user", text: option },
       { type: "bot", text: response },
     ]);
     setShowOptions(false);
+
   };
 
   const sendMessage = async () => {
     if (!input.trim()) return;
   
+    const user = JSON.parse(localStorage.getItem("user-auth"));
+    const userId = user?.id;
+  
     const userMessage = { type: "user", text: input };
     const newMessages = [...messages, userMessage];
-    setMessages(newMessages);
   
-    /*try {
-      const res = await fetch("http://localhost:8000/chat", {
+    setMessages(newMessages);      // 사용자 메시지 화면에 추가
+    setInput("");                  // 입력창 초기화
+  
+    try {
+    console.log(userId, input, user)
+      const res = await fetch("http://localhost:8000/chat/message", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: newMessages })  // ✅ 전체 대화 전송
+        body: JSON.stringify({
+          user_id: userId,
+          message: input
+        })
       });
       const data = await res.json();
-      setMessages([...newMessages, { type: "bot", text: data.reply }]);
-    } catch {
-      setMessages([...newMessages, { type: "bot", text: " 에러가 발생했어요." }]);
+
+      console.log(data);
+      // 예외 처리 먼저
+      if (!data || data.answer === undefined) {
+        throw new Error("응답 형식이 잘못되었습니다.");
+      }
+
+      const aiIntent = data.answer.intent;
+      const aiContents = data.answer.contents;
+      console.log(aiContents)
+      console.log(aiIntent)
+
+      // 메시지 렌더링 로직
+      switch (aiIntent) {
+        case "DEST_RECOMMEND":
+          setMessages(prev => [...prev,
+            { type: "bot", intent: "dest_reco", cards: aiContents.cards },
+            { type: "bot", text: aiContents.message }
+          ]);
+          break;
+
+        case "PRICE_ANALYSIS":
+        case "PRICE_PREDICTION":
+          setMessages(prev => [...prev,
+            { type: "bot", text: aiContents.message },
+            { type: "bot", text: <PriceTrendChart data={aiContents.chartData} />, isWide: true }
+          ]);
+          break;
+
+        case "GENERAL_CHAT":
+          setMessages(prev => [...prev, { type: "bot", text: aiContents.message }]);
+          break;
+
+        default:
+          setMessages(prev => [...prev, { type: "bot", text: "🤖 알 수 없는 응답 유형입니다." }]);
+      }
+      /*const { answer } = data;
+
+      const intent = answer.intent;
+      const contents = answer.contents;
+      
+      setMessages((prev) => [...prev, botMessage]);
+      
+      // 챗봇 응답 저장 및 렌더링
+      switch (intent) {
+        case "DEST_RECOMMEND":
+          setMessages(prev => [...prev,
+            { type: "bot", intent: "dest_reco", cards: contents.cards },
+            { type: "bot", text: contents.message }
+          ]);
+          break;
+  
+        case "PRICE_PREDICTION":
+        case "PRICE_ANALYSIS":
+          setMessages(prev => [...prev,
+            { type: "bot", text: contents.message },
+            { type: "bot", text: <PriceTrendChart data={contents.chartData} />, isWide: true }
+          ]);
+          break;
+  
+        case "POLICY_QA":
+        case "HOTEL_SUMMARY":
+        case "WEATHER_SUMMARY":
+          setMessages((prev) => [...prev, { type: "bot", text: contents.message }]);
+          break;
+
+        case "ALERT_DISPATCH":
+          setMessages((prev) => [
+            ...prev,
+            { type: "bot", text: "📢 알림 문구가 생성되었습니다:" },
+            { type: "bot", text: contents.message }
+          ]);
+          break;
+
+        case "GENERAL_CHAT":
+          setMessages(prev => [...prev, { type: "bot", text: contents.message }]);
+          break;
+  
+        case "SLOT_CLARIFICATION":
+        case "INTENT_FALLBACK":
+          setMessages(prev => [...prev, { type: "bot", text: "❗ 추가 정보가 필요해요: " + contents.message }]);
+          break;
+  
+        case "SESSION_NEW":
+          setMessages([{ type: "bot", text: "🆕 새로운 대화를 시작합니다." }]);
+          break;
+  
+        case "SESSION_CONTINUE":
+          setMessages(prev => [...prev, { type: "bot", text: "이전에 이어서 계속할게요!" }]);
+          break;
+  
+        default:
+          setMessages(prev => [...prev, { type: "bot", text: "❓ 이해하지 못했어요. 다시 입력해 주세요." }]);
+      }*/
+      //PRICE_SEARCH : 이건 "항공권 조회" 버튼 -> searchFlights()에서 처리 중이라 sendMessage()에서는 분기 필요없음.
+       
+    } catch (e) {
+      const errorMsg = "❌ 서버 오류가 발생했어요.";
+      setMessages((prev) => [...prev, { type: "bot", text: errorMsg }]);
     }
-        
-    setInput("");
   };
-  */
-    // ✅ 여기에 테스트용 카드 응답 추가
-    if (input.includes("사진") || input.includes("추천")) {
-      const fakeCardResponse = {
-        type: "bot",
-        intent: "dest_reco",
-        cards: [
-          {
-            city: "제주도",
-            score: 0.9,
-            photos: [
-              "https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photo_reference=AXQCQNSgMPc9eSpEVWfHk4mQooj3TAJnXVMpzUYFL_z-hNBVCQL-LjNr23S6MZa3oG5tjK2tDlqozEkeuMFCMDgArAIql0y9vBVGaxeoVI-u4QbhIyR2ODcON4FzoP6W069J_jNgDMUxcecAuLeEHyuJnCFjembINhqkwoJZIEM9zG8FHwzLkity4UcAIuI3bssyXw5-0eeULMJncKsSNS7mUa9WeW59dEx5WswFdmLekvQuTXTsrL05RZzya6Q-UO13msLKZ4bwzoQ6WbgwykSm8VWLFGaFAK07AaTpvpcMIlOoUtfQP66VckXYvZi8INZfBzObfojNdoR1XqwOMh4uWuQc1UgrtaQrel_EVD-y8yacQ8s35_6WBo_KzwYCQl68PITjvsP_lcai2UtzEQ9DUXnjZENVqG2_rBB4LayX-EzPX4GUKSsXlTNxxN99MjaHbg2wFrMQPQg9B1Wf1MxgCBlaweDCrIHl4uTq2qYSbUvxszdCTeXk3II-wRp7InBMqKTufsguZDsbDAa8iUS7EA5wn8lC2vdXgFqwJhF48NIT7zMRHrMUZmv0pmGG2WOYNb2pbVT7PO6J6FrZdNDDpA13nKvJw54dpjfLzDUEbwAdZvrlkGK6wCOM9KicrYnG2Wc7IA&key=YOUR_API_KEY"
-            ],
-            description: "제주도는 한라산과 성산 일출봉 등 아름다운 자연 경관이 많아 인스타그램 사진 찍기에 최적의 장소입니다. 최근에는 '제주 카페 투어'가 인기이며, 다양한 테마의 카페들이 인기를 끌고 있습니다.",
-            hashtags: ["#korea", "#instagrammable", "#travelphotography"]
-          },
-          {
-            city: "산토리니",
-            score: 0.95,
-            photos: [
-              "https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photo_reference=AXQCQNSZu4yqQNDcBT23ko3YXCY0pILJm7e-pjp8-UbBpocqL7ZvmEZPYgx8Redl4GA1GOprs7-qGLnAGbbY5tAu95ghZnxw5QiI24lLSps392p2afb3Az3bF4ezwoeE53C4F26meiLpWRpvkxaWUKinrYQv9VGmUeGzCqbYgEG2vcJtBO19BF19ln8c2wN_b73HkV8LJBqoS8guZk1xm8lybAkcrPkel9RiUCWYEsah0Ti4yyo8_wjafEsk7WHRAmi1Y6jBO7ZcLJL8Xw1AgGOcNJuhUtCnUKVYNCXSHipn80IP9BtqD9ZB8d6LsQIVsDfAWyOBMkCLHxcG2u07HF8w3xeG9vYeoVDdJXVIZs0s9AobFavmcYD5Q4w28CrtEs95dc4-B7OlR_T8X5VSl12MI3m2TSoR-_Y0t5FRj6_cNUZgIOpoI8Li1uy9An8iklr6btnZGfteccOVbWfmkNMzYtCGiAhaZnXWP7NUEn5OxgLFhvntAQSuJ3hsb35EodCAoOVNbFs-YmzcTm5-ujof1b3amveHzldN0qJMqm8DX_SxeQJVO2KPGI59Mb0PWptinxa39njbFV7JVSzBvz3IDo6LPy-Z2UM5ddyAfxvmL7YHbz1RYAB1cNR1XduP_mqsgAAEAHus&key=YOUR_API_KEY"
-            ],
-            description: "산토리니는 하얀 집과 파란 지붕의 전경이 유명하여 인스타그램에서 많은 사랑을 받고 있습니다. 최근에는 '산토리니 일몰 투어'가 인기를 끌고 있습니다.",
-            hashtags: ["#greece", "#sunset", "#wanderlust"]
-          },
-          {
-            city: "발리",
-            score: 0.9,
-            photos: [
-              "https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photo_reference=AXQCQNRTUe4t9ySKKYwmyzKlYRvSdfJTtxpctoxW4O4NWp1JfyAPCIvRE51D2GweU-5EbnGSJ10MzQ3J1YnXaxvlwWM0l8ZHYb-6SFRoRfuCbZJfCjHU2g7FFyfZlgk-AMelVi6T0VeaYCf2mvXaC2lqPyz_1tDSbJxoBhEkzF1-3DFrhAhITljcS2rkCODOvJlF_OshinXW1MwuLw9wONJidU4Lc4qGdji4SCEYjz7ThkClQgNkLtvj1RKB_vQx8ZuK1JxCh_-kZQAahrDNIkfe_kmPTaiUCBGWpJ6YnOZJqK31L7OUd11KZ1wcsCr4I3uE83BPO48aJTKk3rkTm3aGnBNkLErDHzmSiNGRYwL2-ZcrMLnjC-PZCfv2mzOBnBq5tyH2lelK5L_DxiX3VAc2EiNexWP5CLZyrp7kwvOC5rMuoRDsc_kzhPKCPuHk0TnrpwOuVwUTgFxrBFuJBKtQNQf04t-JH8mG3vaH5dL7LZahXHHNqIkskBxI-QSiWCVaOrf5D6MIjwUYkpyrQlSuERGMkyEiNAa1NgNFrJ_p0nSFLvf7pGGxnykXVnCKmZGaHTqbEPxeUtJLVW1QnHcgBFHZbmK-3I7aY3gw_-Ba2lJaoJP_yET8_UTEdnCGX2DVv_JhfGOX&key=AIzaSyBui9x4GuJQ7cTUyuZd9riZbrye-BJr4Xo"
-            ],
-            description: "발리는 아름다운 해변과 테라스 정원이 있는 논밭으로 유명하여 인스타그램 사진 찍기에 최적입니다. 최근에는 '발리 스윙'이 많은 관광객들에게 인기를 끌고 있습니다.",
-            hashtags: ["#indonesia", "#beachlife", "#foodie"]
-          }
-        ],
-        message: "인스타그램 핫플레이스 여행지로 제주도, 산토리니, 발리를 추천합니다. 각 도시마다 독특한 매력과 최근 인기 있는 트렌드가 있습니다."
-      };
-    
-      console.log("🔥 카드 응답 삽입!");
-      console.log(fakeCardResponse);
-    
-      setMessages([
-        ...newMessages,
-        fakeCardResponse,
-        {
-          type: "bot",
-          text: fakeCardResponse.message
-        }
-      ]);
-    
-      setInput("");
-      return;
-    }
-  }
 
 
   const handleKeyDown = (e) => {
@@ -230,24 +320,21 @@ export default function ChatBot() {
   };
   // 예: 항공편 클릭 시 그래프도 보여주기
   const handleFlightClick = async (flight) => {
+    const user = JSON.parse(localStorage.getItem("user-auth"));
+    const userId = user?.id;
     // 1. 📊 가격 추이 데이터 요청 먼저!
     const res = await fetch(
       `http://localhost:8000/flights/price-trend?origin=${flight.itineraries[0].segments[0].departure.iataCode}&destination=${flight.itineraries[0].segments.slice(-1)[0].arrival.iataCode}`
     );
     const data = await res.json();
+    const summary = getFlightSummaryText(flight);
+    const chartMsg = { isWide: true, chart: data }; // 그래프는 단순화해 저장
 
     // 2. 메시지 2개 추가: 요약 + 차트
     setMessages((prev) => [
       ...prev,
-      {
-        type: "bot",
-        text: getFlightSummaryText(flight), // 텍스트 요약 메시지
-      },
-      {
-        type: "bot",
-        text: <PriceTrendChart data={data} />, // ✅ JSX 메시지로 차트 삽입
-        isWide: true,
-      },
+      { type: "bot", text: summary },
+      { type: "bot", text: <PriceTrendChart data={data} />, isWide: true }
     ]);
 
     // 3. 상태 업데이트 (선택사항)
@@ -310,10 +397,10 @@ export default function ChatBot() {
                 >
                   {/* 아이콘은 텍스트일 때만 출력 */}
                   {typeof msg.text === "string" || Array.isArray(msg.text)
-                    ? msg.type === "bot" ? "🤖 " : "🙋‍♂️ " : null}
+                    ? (msg.type === "bot" ? "🤖 " : "🙋‍♂️ ") : null}
 
                   {/* ✨ 카드 분기 추가 */}
-                  {msg.intent === "dest_reco" ? (
+                  {msg.intent === "dest_reco" && msg.cards ? (
                     <div className="flex flex-wrap gap-4">
                       {msg.cards.map((card, i) => (
                         <DestinationCard
