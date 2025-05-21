@@ -1,0 +1,40 @@
+import { useState, useEffect, useContext } from 'react';
+import UserContext from 'src/contexts/userContext';
+
+export default function useMessage(sessionId) {
+  const [messageList, setMessageList] = useState([]);
+  const { id: userId } = useContext(UserContext);
+
+  // 1) 초기 로드: chat list 불러오기
+  useEffect(() => {
+    fetch('http://localhost:8000/chat/messages', {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_id: userId})
+    })
+      .then(res => res.json())
+      .then(({ messages }) => {
+        // session_id 오름차순 정렬
+        const sorted = messages.sort((a, b) => a.session_id - b.session_id);
+        setMessageList(sorted);
+      })
+      .catch(console.error);
+  }, [sessionId, userId]);
+
+  // 2) 새 메시지 추가할 때: POST + 다시 정렬
+  function addMessage(text) {
+    fetch('http://localhost:8000/chat/message', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_id: userId, message: text })
+    })
+      .then(res => res.json())
+      .then(({ messages }) => {
+        const sorted = messages.sort((a, b) => a.session_id - b.session_id);
+        setMessageList(sorted);
+      })
+      .catch(console.error);
+  }
+
+  return { messageList, addMessage };
+}
