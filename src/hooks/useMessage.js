@@ -1,5 +1,4 @@
 import { useState, useEffect, useContext } from 'react';
-import UserContext from 'src/contexts/userContext';
 
 export default function useMessage(sessionId) {
   const [messageList, setMessageList] = useState([]);
