@@ -1,101 +1,297 @@
-/*Tailwind 등 전역 스타일 설정 (색깔 커스텀 설정 여기서 가능)*/
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
+@import './design.css';
+@import './colors.css';
+
+html,
+body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
 }
 body {
-  margin: 0;
-  font-family: sans-serif;
+	margin: 0;
+	font-family: sans-serif;
 }
 
-@layer base {
-  :root {
-    --background: 210 16% 98%;
-    --foreground: 240 10% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --primary: 240 5.9% 10%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 240 10% 3.9%;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
-    --radius: 0.5rem;
-  }
-  .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-  }
+:root {
+	/* Brand Skyblue */
+	--color-900: #203681; /* --color-brand-scale-skyblue-skyblue900 */
+	--color-800: #538ed6; /* --color-brand-scale-skyblue-skyblue800 */
+	--color-700: #6fa3e4; /* --color-brand-scale-skyblue-skyblue700 */
+	--color-600: #88b9f5; /* --color-brand-scale-skyblue-skyblue600 */
+	--color-500: #9ed2ff; /* --color-brand-scale-skyblue-skyblue500 */
+	--color-400: #abdeff; /* --color-brand-scale-skyblue-skyblue400 */
+	--color-300: #b5e8ff; /* --color-brand-scale-skyblue-skyblue300 */
+	--color-200: #cbeffd; /* --color-brand-scale-skyblue-skyblue200 */
+	--color-100: #e3fbff; /* --color-brand-scale-skyblue-skyblue100 */
+
+	--background: 210 16% 98%;
+	--foreground: 240 10% 3.9%;
+	--card: 0 0% 100%;
+	--card-foreground: 240 10% 3.9%;
+	--popover: 0 0% 100%;
+	--popover-foreground: 240 10% 3.9%;
+	--primary: 240 5.9% 10%;
+	--primary-foreground: 0 0% 98%;
+	--secondary: 240 4.8% 95.9%;
+	--secondary-foreground: 240 5.9% 10%;
+	--muted: 240 4.8% 95.9%;
+	--muted-foreground: 240 3.8% 46.1%;
+	--accent: 240 4.8% 95.9%;
+	--accent-foreground: 240 5.9% 10%;
+	--destructive: 0 84.2% 60.2%;
+	--destructive-foreground: 0 0% 98%;
+	--border: 240 5.9% 90%;
+	--input: 240 5.9% 90%;
+	--ring: 240 10% 3.9%;
+	--chart-1: 12 76% 61%;
+	--chart-2: 173 58% 39%;
+	--chart-3: 197 37% 24%;
+	--chart-4: 43 74% 66%;
+	--chart-5: 27 87% 67%;
+	--radius: 0.5rem;
+}
+.dark {
+	--background: 240 10% 3.9%;
+	--foreground: 0 0% 98%;
+	--card: 240 10% 3.9%;
+	--card-foreground: 0 0% 98%;
+	--popover: 240 10% 3.9%;
+	--popover-foreground: 0 0% 98%;
+	--primary: 0 0% 98%;
+	--primary-foreground: 240 5.9% 10%;
+	--secondary: 240 3.7% 15.9%;
+	--secondary-foreground: 0 0% 98%;
+	--muted: 240 3.7% 15.9%;
+	--muted-foreground: 240 5% 64.9%;
+	--accent: 240 3.7% 15.9%;
+	--accent-foreground: 0 0% 98%;
+	--destructive: 0 62.8% 30.6%;
+	--destructive-foreground: 0 0% 98%;
+	--border: 240 3.7% 15.9%;
+	--input: 240 3.7% 15.9%;
+	--ring: 240 4.9% 83.9%;
+	--chart-1: 220 70% 50%;
+	--chart-2: 160 60% 45%;
+	--chart-3: 30 80% 55%;
+	--chart-4: 280 65% 60%;
+	--chart-5: 340 75% 55%;
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
-
-  body {
-    @apply bg-background text-foreground;
-  }
+* {
+	@apply border-border;
 }
+
+body {
+	@apply bg-background text-foreground;
+}
+
 /*스크롤바 숨기기용 클래스*/
 
 @layer utilities {
-  .animate-fadeIn {
-    animation: fadeIn 0.4s ease-in-out both;
-  }
+	.animate-fadeIn {
+		animation: fadeIn 0.4s ease-in-out both;
+	}
 
-  @keyframes fadeIn {
-    0% { opacity: 0; transform: translateY(8px); }
-    100% { opacity: 1; transform: translateY(0); }
-  }
+	@keyframes fadeIn {
+		0% {
+			opacity: 0;
+			transform: translateY(8px);
+		}
+		100% {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
 }
 .hide-scrollbar::-webkit-scrollbar {
-  width:0;
-  height:0;
+	width: 0;
+	height: 0;
 }
 .hide-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+
+
+
+/* ---------------------------------------------------------------------- */
+/*  공통 전환 프리셋                                                        */
+/* ---------------------------------------------------------------------- */
+.animate-smooth {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms; /* 기본 0.3 초 */
+  transform-origin: center;
+  backface-visibility: hidden; /* GPU 렌더링 활용 */
+}
+
+/* ---------------------------------------------------------------------- */
+/*  1) Hover 시 살짝 확대                                                    */
+/* ---------------------------------------------------------------------- */
+.hover-scale {
+  transform: translateZ(0);
+  transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.hover-scale:hover {
+  transform: scale(1.03);
+}
+
+/* 1‑A) 강조 확대 */
+.hover-scale-up {
+  transform: translateZ(0);
+  transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.hover-scale-up:hover {
+  transform: scale(1.05);
+}
+
+/* ---------------------------------------------------------------------- */
+/*  2) Active 시 축소 (클릭 피드백)                                         */
+/* ---------------------------------------------------------------------- */
+.press-scale {
+  transform: translateZ(0);
+  transition: transform 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.press-scale:active {
+  transform: scale(0.97);
+}
+
+/* ---------------------------------------------------------------------- */
+/*  3) Hover 시 위로 4 px 리프트                                           */
+/* ---------------------------------------------------------------------- */
+.hover-up {
+  transform: translateY(0);
+  transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.hover-up:hover {
+  transform: translateY(-4px);
+}
+
+/* ---------------------------------------------------------------------- */
+/*  4) Hover 시 투명도 감소 – 페이드                                      */
+/* ---------------------------------------------------------------------- */
+.hover-fade {
+  opacity: 1;
+  transition: opacity 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.hover-fade:hover {
+  opacity: 0.7;
+}
+
+/* ---------------------------------------------------------------------- */
+/*  5) 종합 효과 – Hover Pop (Scale + Lift + Opacity)                       */
+/* ---------------------------------------------------------------------- */
+.hover-pop {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+  transition:
+    transform 300ms cubic-bezier(0.4, 0, 0.2, 1),
+    opacity   300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.hover-pop:hover {
+  transform: translateY(-4px) scale(1.05);
+  opacity: 0.9; /* dissolve ≈ 90% (원 요청: 약 50% → UX상 90%가 자연스러움) */
+  background-color: var(--color-grayscale-alpha-light-100)
+}
+  .hover-pop:active {
+      background-color: var(--color-grayscale-alpha-dark-100)
+
+  }
+
+/* ---------------------------------------------------------------------- */
+/*  6) 밝기 조절 – Hover & Active                                          */
+/* ---------------------------------------------------------------------- */
+/* 6‑A) Hover 시 밝기를 살짝 높임 */
+.hover-brighten {
+  transition: filter 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  filter: brightness(1);
+}
+.hover-brighten:hover {
+  filter: brightness(1.05);
+}
+
+/* 6‑B) Active 시 밝기를 낮춤 */
+.press-dim {
+  transition: filter 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.press-dim:active {
+  filter: brightness(0.9);
+}
+
+/* ---------------------------------------------------------------------- */
+/*  7) 프리셋 컴포넌트용 조합 클래스                                       */
+/* ---------------------------------------------------------------------- */
+/* 카드: Pop + Press‑Scale + 밝기 효과 */
+.interactive-card {
+  /* 기본 */
+  transform: translateY(0) scale(1);
+  opacity: 1;
+  filter: brightness(1);
+  transition:
+    transform 300ms cubic-bezier(0.4, 0, 0.2, 1),
+    opacity   300ms cubic-bezier(0.4, 0, 0.2, 1),
+    filter    150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.interactive-card:hover {
+  transform: translateY(-4px) scale(1.05);
+  opacity: 0.9;
+  filter: brightness(1.05);
+  cursor: pointer;
+}
+.interactive-card:active {
+  transform: translateY(-2px) scale(0.97); /* 눌렸을 때 살짝 축소 */
+  filter: brightness(0.9);
+}
+
+/* ---------------------------------------------------------------------- */
+/*  8) 버튼 전용 클래스                                                    */
+/* ---------------------------------------------------------------------- */
+.interactive-btn {
+  /* 배경 및 모서리 고정 */
+  border-radius: 12px;
+  /* 기본 transform/filter */
+  transform: translateZ(0) scale(1);
+  filter: brightness(1);
+  /* 트랜지션 통합 */
+  transition:
+    transform 200ms cubic-bezier(0.4, 0, 0.2, 1),
+    filter    150ms cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 200ms ease;
+}
+.interactive-btn:hover {
+  transform: scaleY(1.03);
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+  background-color: var(--color-grayscale-alpha-light-100);
+}
+.interactive-btn:active {
+  background-color: var(--color-grayscale-alpha-dark-100);
+}
+
+/* ---------------------------------------------------------------------- */
+/*  9) 클릭 강조 스타일                                                   */
+/* ---------------------------------------------------------------------- */
+.click-highlight {
+  border: 1px solid var(--color-grayscale-scale-10, #FCFCFC);
+  background: var(--color-grayscale-alpha-light-500, rgba(255, 255, 255, 0.50));
+  border-radius: 20px;
+  /* 그림자가 border-radius를 완벽히 따르도록 inset + round 지정 */
+  clip-path: inset(0 round 30px);
+  /* 기존 그림자 */
+  box-shadow: 0 2px 20px rgba(10,10,101,0.10);
+  transition: box-shadow 200ms ease, transform 200ms ease;
+
+}
+.click-highlight:hover {
+
+  background: var(--color-grayscale-alpha-light-300, rgba(255, 255, 255, 0.30));
+  transform: translateY(-2px);
+
+
+
 }

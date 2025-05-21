@@ -57,6 +57,15 @@ export default {
           '4': 'hsl(var(--chart-4))',
           '5': 'hsl(var(--chart-5))',
         },
+        "brand-100": "var(--color-100)",
+        "brand-200": "var(--color-200)",
+        "brand-300": "var(--color-300)",
+        "brand-400": "var(--color-400)",
+        "brand-900": "var(--color-900)",
+        "brand-800": "var(--color-800)",
+        "brand-700": "var(--color-700)",
+        "brand-600": "var(--color-600)",
+        "brand-500": "var(--color-500)",
 
         // 🎨 내가 추가한 고정 컬러 팔레트
         theme: {
@@ -82,5 +91,5 @@ export default {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+//  plugins: [require("tailwindcss-animate")],
 }
