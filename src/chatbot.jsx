@@ -8,7 +8,7 @@ import { useState } from 'react';
 
 export default function ChatPage() {
   const { id: sessionId } = useParams();
-  const { messageList, setMessageList, addMessageAndUpdate } = useMessage(sessionId);
+  const { messageList, addMessage } = useMessage(sessionId);
 
   const user = JSON.parse(localStorage.getItem("user-auth"));
 
@@ -25,35 +25,16 @@ export default function ChatPage() {
 
   const handleOptionClick = async (option) => {
     setShowFlightForm(false);
-
+  
+    // 항공권 조회는 폼 보여주고 메시지도 함께 전송
     if (option === "항공권 조회") {
       setShowFlightForm(true);
+      await addMessage(option); // 서버에도 기록 남기기
+      return;
     }
-
-    const now = new Date().toISOString();
-
-    // 사용자 메시지 즉시 표시
-    const userMessage = {
-      session_id: `temp-user-${Date.now()}`,
-      message: option,
-      answer: null,
-      timestamp: now,
-    };
-
-    const loadingMessage = {
-      session_id: `temp-loading-${Date.now()}`,
-      message: "",
-      answer: {
-        intent: "LOADING",
-        contents: { message: "..." },
-      },
-      timestamp: now,
-    };
-
-    setMessageList((prev) => [...prev, userMessage, loadingMessage]);
-
-    // 실제 GPT 호출 및 응답 반영
-    await addMessageAndUpdate(option);
+  
+    // 모든 옵션은 사용자 입력 그대로 서버로 보내서 응답 받음
+    await addMessage(option);
   };
 
   const handleFlightSubmit = async () => {
