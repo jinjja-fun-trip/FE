@@ -34,5 +34,9 @@ export default function useMessage(sessionId) {
 			.catch(console.error);
 	}
 
-	return { messageList, addMessage };
+	return {
+		messageList,
+		addMessage,
+		setMessageList,  // ✅ 추가!
+	  };
 }

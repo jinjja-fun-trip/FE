@@ -4,11 +4,12 @@ import { useParams } from 'react-router-dom';
 import InputArea from './components/ui/InputArea';
 import MessageList from './components/MessageList';
 import useMessage from './hooks/useMessage';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import AlertComposer from "@/components/intents/AlertDispatch";
 
 export default function ChatPage() {
   const { id: sessionId } = useParams();
-  const { messageList, addMessage } = useMessage(sessionId);
+  const { messageList, addMessage, setMessageList } = useMessage(sessionId);
 
   const user = JSON.parse(localStorage.getItem("user-auth"));
 
@@ -17,11 +18,31 @@ export default function ChatPage() {
   const [flightResults, setFlightResults] = useState([]);
   const [sortOption, setSortOption] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [showAlertComposer, setShowAlertComposer] = useState(true); // 테스트용: 모달 무조건 표시
+  const [alertFlightInfo, setAlertFlightInfo] = useState({
+    origin: "ICN",
+    destination: "LAX",
+    departure_date: "2025-06-15",
+    price_threshold: 450000,
+  });
+  const dummyGeneralChatMessage = {
+    session_id: 1234,
+    message: "안녕! 너는 무슨 일을 도와줄 수 있어?",
+    answer: {
+      intent: "GENERAL_CHAT",
+      contents: {
+        message: "안녕하세요! 항공권 조회, 예약, 취소 등을 도와드릴 수 있어요 ✈️",
+      },
+    },
+    timestamp: new Date().toISOString(),
+  };
+
 
   const handleLogout = () => {
     localStorage.removeItem("user-auth");
     window.location.href = "/";
   };
+  
 
   const handleOptionClick = async (option) => {
     setShowFlightForm(false);
@@ -56,11 +77,40 @@ export default function ChatPage() {
       setIsLoading(false);
     }
   };
+  useEffect(() => {
+    const lastMessage = messageList[messageList.length - 1];
+  
+    if (
+      lastMessage &&
+      lastMessage.answer?.intent === "ALERT_DISPATCH" &&
+      lastMessage.answer.contents
+    ) {
+      setAlertFlightInfo(lastMessage.answer.contents.payload);
+      setShowAlertComposer(true);
+    }
+  }, [messageList]);
+
+  // 실제 반영된 messageList 로그 확인
+  useEffect(() => {
+      console.log("📦 messageList 변경됨:", messageList);
+  }, [messageList]);
 
   const handleFlightClick = (flight) => {
     const summaryArray = getFlightSummaryText(flight);
     const summaryText = summaryArray.join('\n');
-    addMessageAndUpdate(summaryText);
+  
+    // 메시지로는 그대로 남기고
+    addMessage(summaryText);
+  
+    // AlertComposer 띄우기 위한 정보 저장
+    setAlertFlightInfo({
+      origin: flight.itineraries[0].segments[0].departure.iataCode,
+      destination: flight.itineraries[0].segments.slice(-1)[0].arrival.iataCode,
+      departure_date: flight.itineraries[0].segments[0].departure.at.slice(0, 10), // YYYY-MM-DD
+      price_threshold: parseInt(flight.price.total),
+    });
+  
+    setShowAlertComposer(true);
   };
 
   const getFlightSummaryText = (flight) => {
@@ -86,6 +136,18 @@ export default function ChatPage() {
       `경유 정보: ${stopInfo}`,
       `가격: ${price}`,
     ];
+  };
+  const sortFlights = (flights) => {
+    return [...flights].sort((a, b) => {
+      if (sortOption === "price") {
+        return parseFloat(a.price.total) - parseFloat(b.price.total);
+      } else if (sortOption === "time") {
+        return new Date(a.itineraries[0].segments[0].departure.at) - new Date(b.itineraries[0].segments[0].departure.at);
+      } else if (sortOption === "korean") {
+        const koreanCodes = ["KE", "OZ"];
+        return koreanCodes.includes(b.itineraries[0].segments[0].carrierCode) - koreanCodes.includes(a.itineraries[0].segments[0].carrierCode);
+      } else return 0;
+    });
   };
 
   return (
@@ -128,9 +190,7 @@ export default function ChatPage() {
               />
             )}
           </div>
-          <div className="p-4 border-t">
-            <InputArea onSend={handleOptionClick} placeholder="메시지를 입력하세요..." />
-          </div>
+          <InputArea onSend={handleOptionClick} placeholder="메시지를 입력하세요..." />
         </div>
       </div>
 
@@ -140,10 +200,20 @@ export default function ChatPage() {
           sortOption={sortOption}
           setSortOption={setSortOption}
           setFlightResults={setFlightResults}
-          setMessages={addMessageAndUpdate}
+          setMessages={addMessage}
           handleFlightClick={handleFlightClick}
           sortFlights={sortFlights}
         />
+      )}
+      {/* ✨ 가격 알림 등록 카드 */}
+      {showAlertComposer && alertFlightInfo && (
+        <div className="absolute inset-0 z-50 bg-black bg-opacity-30 flex items-center justify-center">
+          <AlertComposer
+            userId={user.id}
+            defaultPayload={alertFlightInfo}
+            onClose={() => setShowAlertComposer(false)}
+          />
+        </div>
       )}
     </div>
   );

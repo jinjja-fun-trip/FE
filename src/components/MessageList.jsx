@@ -5,6 +5,9 @@ import PriceSearch from './intents/PriceSearch';
 import DestRecommend from './intents/DestRecommend';
 import IntentFallback from './intents/IntentFallback';
 import PolicyQA from './intents/PolicyQA';
+import AlertDispatch from './intents/AlertDispatch';
+import GeneralChat from './intents/GeneralChat';
+import PriceTrendSection from './intents/PriceTrendSection';
 import BotMessage from '@/components//BotMessage';
 /*
 import PricePrediction  from './intents/PricePrediction';
@@ -22,6 +25,11 @@ const IntentComponents = {
 	PRICE_SEARCH: PriceSearch,
 	DEST_RECOMMEND: DestRecommend,
 	POLICY_QA: PolicyQA,
+	ALERT_DISPATCH: AlertDispatch,
+	GENERAL_CHAT: GeneralChat,
+	INTENT_FALLBACK: IntentFallback,
+	PRICE_ANALYSIS: PriceTrendSection,
+	
 	
 	/* PRICE_PREDICTION:   PricePrediction,
   PRICE_ANALYSIS:     PriceAnalysis,
@@ -37,34 +45,50 @@ const IntentComponents = {
 
 export default function MessageList({ messageList }) {
 	return (
-		<div className='flex flex-col p-5 gap-20'>
-			{messageList.map(({ session_id, message, answer, timestamp }) => {
-				const AnswerComponent =
-					IntentComponents[answer.intent] || IntentFallback;
-				return (
-					<div key={session_id} className='flex flex-col gap-[20px]'>
-						{/* 타임스탬프 - 중앙 정렬 */}
-						<div className='flex rounded-sm justify-center mt-1'>
-							<span className='text-xs text-gray-400'>
-								{new Date(timestamp).toLocaleString('ko-KR')}
-							</span>
-						</div>
-						{/* 사용자 메시지 - 왼쪽 정렬 */}
-						<div className='flex justify-end'>
-							<div className='max-w-3/4 p-3 bg-gray-100 rounded-lg shadow-sm'>
-								<p className='font-medium text-gray-800'>{message}</p>
-							</div>
-						</div>
-
-						{/* 봇 답변 - 오른쪽 정렬 */}
-						<div className='flex justify-start'>
-							<div className='max-w-[840px]  p-3  bg-blue-50  rounded-lg shadow-sm'>
-								<AnswerComponent {...answer.contents} />
-							</div>
-						</div>
-					</div>
-				);
-			})}
-		</div>
+	  <div className="flex flex-col p-5 gap-6">
+		{messageList.map(({ session_id, message, answer, timestamp }) => {
+			  console.log("🧪 렌더링 시도:", {
+				intent: answer?.intent,
+				contents: answer?.contents,
+			  });
+		  const AnswerComponent = IntentComponents[answer.intent] || IntentFallback;
+		  const time = new Date(timestamp).toLocaleString('ko-KR');
+  
+		  return (
+			<div key={session_id} className="flex flex-col gap-2">
+			  {/* 🕒 타임스탬프 */}
+			  <div className="flex justify-center">
+				<span className="text-xs text-gray-400">{time}</span>
+			  </div>
+  
+			  {/* 🙋 사용자 메시지 (오른쪽) */}
+			  <div className="flex justify-end">
+				<div
+				  className={`relative px-4 py-2 max-w-xl text-sm break-words shadow-md animate-fadeIn bg-[#057DFF] text-white rounded-br-none rounded-3xl`}
+				>
+				  {message}
+				  <div
+					className={`absolute bottom-0 right-0 w-3 h-3 bg-[#057DFF] rotate-45 translate-y-1/2`}
+					style={{ clipPath: 'polygon(0 0, 100% 0, 0 100%)' }}
+				  />
+				</div>
+			  </div>
+  
+			  {/* 🤖 봇 응답 (왼쪽) */}
+			  <div className="flex justify-start">
+				<div
+				  className={`relative px-4 py-2 max-w-xl text-sm break-words shadow-md animate-fadeIn bg-[#E9E9EB] text-black rounded-bl-none rounded-3xl`}
+				>
+				  <AnswerComponent {...answer.contents} />
+				  <div
+					className={`absolute bottom-0 left-0 w-3 h-3 bg-[#E9E9EB] rotate-45 translate-y-1/2`}
+					style={{ clipPath: 'polygon(0 0, 100% 0, 0 100%)' }}
+				  />
+				</div>
+			  </div>
+			</div>
+		  );
+		})}
+	  </div>
 	);
-}
+  }
