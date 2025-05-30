@@ -76,9 +76,14 @@ export default {
           '0%, 100%': { transform: 'translateY(-2%)' },
           '50%': { transform: 'translateY(0)' },
         },
+        ellipsisBlink: {
+          '0%, 100%': { opacity: '0.3' },
+          '50%': { opacity: '1' },
+        },
       },
       animation: {
         'bounce-small': 'bounceSmall 1s infinite',
+        'ellipsis-blink': 'ellipsisBlink 1.2s ease-in-out infinite',
       },
     },
   },

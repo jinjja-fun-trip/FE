@@ -9,16 +9,15 @@ import AlertComposer from "@/components/intents/AlertDispatch";
 
 export default function ChatPage() {
   const { id: sessionId } = useParams();
-  const { messageList, addMessage, setMessageList } = useMessage(sessionId);
-
   const user = JSON.parse(localStorage.getItem("user-auth"));
+  const { messageList, addMessage, setMessageList } = useMessage(sessionId, user?.id);
 
   const [showFlightForm, setShowFlightForm] = useState(false);
   const [flightForm, setFlightForm] = useState({ origin: '', destination: '', date: '', adults: 1 });
   const [flightResults, setFlightResults] = useState([]);
   const [sortOption, setSortOption] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [showAlertComposer, setShowAlertComposer] = useState(true); // 테스트용: 모달 무조건 표시
+  const [showAlertComposer, setShowAlertComposer] = useState(false); // 테스트용: 모달 무조건 표시
   const [alertFlightInfo, setAlertFlightInfo] = useState({
     origin: "ICN",
     destination: "LAX",
@@ -50,7 +49,7 @@ export default function ChatPage() {
     // 항공권 조회는 폼 보여주고 메시지도 함께 전송
     if (option === "항공권 조회") {
       setShowFlightForm(true);
-      await addMessage(option); // 서버에도 기록 남기기
+      //await addMessage(option); // 서버에도 기록 남기기
       return;
     }
   
@@ -86,7 +85,7 @@ export default function ChatPage() {
       lastMessage.answer.contents
     ) {
       setAlertFlightInfo(lastMessage.answer.contents.payload);
-      setShowAlertComposer(true);
+      //setShowAlertComposer(true);
     }
   }, [messageList]);
 
@@ -180,7 +179,7 @@ export default function ChatPage() {
       <div className="flex-1 flex items-center justify-center bg-[#f8f9fb] px-4 py-6">
         <div className="w-full max-w-4xl h-full bg-white rounded-xl shadow flex flex-col overflow-hidden">
           <div className="flex-1 overflow-y-auto p-6">
-            <MessageList messageList={messageList} userId={10} />
+            <MessageList messageList={messageList} userId={user?.id} />
             {showFlightForm && (
               <FlightSearchForm
                 form={flightForm}
@@ -209,7 +208,7 @@ export default function ChatPage() {
       {showAlertComposer && alertFlightInfo && (
         <div className="absolute inset-0 z-50 bg-black bg-opacity-30 flex items-center justify-center">
           <AlertComposer
-            userId={user.id}
+            userId={user?.id}
             defaultPayload={alertFlightInfo}
             onClose={() => setShowAlertComposer(false)}
           />

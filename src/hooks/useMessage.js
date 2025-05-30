@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 
-export default function useMessage(sessionId) {
+export default function useMessage(sessionId, userId) {
 	const [messageList, setMessageList] = useState([]);
-	const userId = 10;
 
 	// 1) 초기 로드: chat list 불러오기
 	useEffect(() => {
@@ -21,6 +20,15 @@ export default function useMessage(sessionId) {
 
 	// 2) 새 메시지 추가할 때: POST + 다시 정렬
 	function addMessage(text) {
+			// 1. 사용자 메시지와 로딩 메시지 추가
+		const userMessage = {
+			session_id: Date.now(),  // 임시 키 (서버 응답 오면 대체됨)
+			message: text,
+			answer: null,
+			timestamp: new Date().toISOString(),
+			loading: true,  // ✅ 로딩 표시용
+		};
+		setMessageList(prev => [...prev, userMessage]);
 		fetch('http://localhost:8000/chat/message', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },

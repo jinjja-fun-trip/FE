@@ -44,9 +44,6 @@ export default function FlightResults({
         <button
           onClick={() => {
             setFlightResults([]);
-            setMessages((prev) =>
-              prev.filter((msg) => msg.text !== "🛫 항공권 조회 결과입니다.")
-            );
           }}
           className="text-gray-400 hover:text-red-500 text-lg font-bold"
         >
