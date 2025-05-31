@@ -9,10 +9,8 @@ export default function useMessage(sessionId, userId) {
             {method: 'GET', headers: { 'Content-Type': 'application/json' }}
         )
 			.then((res) => res.json())
-			.then(({ messages }) => {
-				// session_id 오름차순 정렬
-				console.log(messages);
-				const sorted = messages.sort((a, b) => a.session_id - b.session_id);
+			.then((data) => {
+				const sorted = (data.messages ?? []).sort((a, b) => a.session_id - b.session_id);
 				setMessageList(sorted);
 			})
 			.catch(console.error);
@@ -35,8 +33,8 @@ export default function useMessage(sessionId, userId) {
 			body: JSON.stringify({ user_id: userId, message: text }),
 		})
 			.then((res) => res.json())
-			.then(({ messages }) => {
-				const sorted = messages.sort((a, b) => a.session_id - b.session_id);
+			.then((data) => {
+				const sorted = (data.messages ?? []).sort((a, b) => a.session_id - b.session_id);
 				setMessageList(sorted);
 			})
 			.catch(console.error);
