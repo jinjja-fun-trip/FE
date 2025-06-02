@@ -10,6 +10,8 @@ import AlertComposer from "@/components/intents/AlertDispatch";
 export default function ChatPage() {
   const { id: sessionId } = useParams();
   const user = JSON.parse(localStorage.getItem("user-auth"));
+  const userId = user?.id;
+  const emailId = user?.email;
   const { messageList, addMessage, setMessageList } = useMessage(sessionId, user?.id);
 
   const [showFlightForm, setShowFlightForm] = useState(false);

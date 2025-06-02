@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 
 export default function AlertComposer({ userId, defaultPayload, onClose }) {
-  const [threshold, setThreshold] = useState(defaultPayload.price_threshold || '');
+  console.log("✅ 받은 defaultPayload:", defaultPayload);
+  // defaultPayload가 없을 경우 대비 (방어 코드)
+  if (!defaultPayload) {
+    return <p className="p-4 text-sm text-red-500">❌ 가격 알림 정보가 제공되지 않았습니다.</p>;
+  }
+
+  const [threshold, setThreshold] = useState(defaultPayload?.price_threshold || '');
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
@@ -59,7 +65,10 @@ export default function AlertComposer({ userId, defaultPayload, onClose }) {
       />
 
       <div className="flex justify-end gap-2 pt-2">
-        <button onClick={onClose} className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 text-sm">
+        <button
+          onClick={onClose}
+          className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 text-sm"
+        >
           취소
         </button>
         <button

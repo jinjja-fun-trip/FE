@@ -7,7 +7,8 @@ import PriceSearch from './intents/PriceSearch';
 import DestRecommend from './intents/DestRecommend';
 import IntentFallback from './intents/IntentFallback';
 import PolicyQA from './intents/PolicyQA';
-import AlertDispatch from './intents/AlertDispatch';
+import AlertComposer from './intents/AlertDispatch';
+import IntentAlertDispatch from './intents/IntentAlertDispatch';
 import GeneralChat from './intents/GeneralChat';
 import PriceTrendSection from './intents/PriceTrendSection';
 import BotMessage from '@/components//BotMessage';
@@ -23,11 +24,13 @@ import GeneralChat      from './intents/GeneralChat';
 import IntentFallback   from './intents/IntentFallback';
 import SlotClarification from './intents/SlotClarification';*/
 
+
+
 const IntentComponents = {
 	PRICE_SEARCH: PriceSearch,
 	DEST_RECOMMEND: DestRecommend,
 	POLICY_QA: PolicyQA,
-	ALERT_DISPATCH: AlertDispatch,
+	ALERT_DISPATCH: IntentAlertDispatch,
 	GENERAL_CHAT: GeneralChat,
 	INTENT_FALLBACK: IntentFallback,
 	PRICE_ANALYSIS: PriceTrendSection,
@@ -75,7 +78,13 @@ function LoadingBubble() {
 			AnswerComponent = () => <LoadingBubble />;
 		  } else {
 			const IntentComponent = IntentComponents[answer.intent] || IntentFallback;
-			AnswerComponent = () => <IntentComponent {...answer.contents} />;
+			AnswerComponent = () => {
+				if (answer.intent === 'ALERT_DISPATCH') {
+				  return <IntentComponent contents={answer.contents} />; // ✅ 특별 처리
+				} else {
+				  return <IntentComponent {...answer.contents} />; // ✅ 기존 방식 유지
+				}
+			  };
 		  }
   
 		  return (
