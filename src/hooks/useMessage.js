@@ -34,6 +34,7 @@ export default function useMessage(sessionId, userId) {
 		})
 			.then((res) => res.json())
 			.then((data) => {
+				console.log("🧠 서버 응답:", data);
 				const sorted = (data.messages ?? []).sort((a, b) => a.session_id - b.session_id);
 				setMessageList(sorted);
 			})

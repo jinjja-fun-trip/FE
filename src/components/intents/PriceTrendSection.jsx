@@ -9,9 +9,18 @@ const quartileLabels = {
   MAXIMUM: "최고"
 };
 
-export default function PriceTrendSection({ result }) {
-  // 분석 결과로부터 priceMetrics → 그래프용 데이터 변환
-  const chartData = result.priceMetrics.map((entry) => ({
+export default function PriceTrendSection(props) {
+  const { priceMetrics, message } = props;
+
+  if (!priceMetrics || !Array.isArray(priceMetrics)) {
+    return (
+      <div className="bg-red-100 text-red-700 px-4 py-2 rounded shadow text-sm max-w-xl">
+        가격 분석 데이터를 불러오는 데 실패했습니다.
+      </div>
+    );
+  }
+
+  const chartData = priceMetrics.map((entry) => ({
     date: quartileLabels[entry.quartileRanking] || entry.quartileRanking,
     price: entry.amount,
   }));
@@ -20,7 +29,7 @@ export default function PriceTrendSection({ result }) {
     <div className="space-y-4">
       {/* 텍스트 요약 메시지 */}
       <div className="bg-sky-100 text-sky-900 px-4 py-2 rounded shadow text-sm max-w-xl">
-        {result.message}
+        {message}
       </div>
 
       {/* 가격 추이 그래프 */}

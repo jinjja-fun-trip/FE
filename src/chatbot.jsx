@@ -18,12 +18,7 @@ export default function ChatPage() {
   const [sortOption, setSortOption] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showAlertComposer, setShowAlertComposer] = useState(false); // 테스트용: 모달 무조건 표시
-  const [alertFlightInfo, setAlertFlightInfo] = useState({
-    origin: "ICN",
-    destination: "LAX",
-    departure_date: "2025-06-15",
-    price_threshold: 450000,
-  });
+  const [alertFlightInfo, setAlertFlightInfo] = useState(null);
   const dummyGeneralChatMessage = {
     session_id: 1234,
     message: "안녕! 너는 무슨 일을 도와줄 수 있어?",
@@ -205,7 +200,7 @@ export default function ChatPage() {
         />
       )}
       {/* ✨ 가격 알림 등록 카드 */}
-      {showAlertComposer && alertFlightInfo && (
+      {showAlertComposer && alertFlightInfo?.origin && alertFlightInfo?.price_threshold && (
         <div className="absolute inset-0 z-50 bg-black bg-opacity-30 flex items-center justify-center">
           <AlertComposer
             userId={user?.id}
