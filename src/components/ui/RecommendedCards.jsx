@@ -7,7 +7,7 @@ export default function RecommendedCards() {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    axios.get("http://localhost:8000/recommendations") // or post if needed
+    axios.get("http://3.145.175.131/recommendations") // or post if needed
       .then((res) => {
         setCards(res.data.cards);
         setMessage(res.data.message);

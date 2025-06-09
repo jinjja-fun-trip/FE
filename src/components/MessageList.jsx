@@ -11,6 +11,8 @@ import AlertComposer from './intents/AlertDispatch';
 import IntentAlertDispatch from './intents/IntentAlertDispatch';
 import GeneralChat from './intents/GeneralChat';
 import PriceTrendSection from './intents/PriceTrendSection';
+import WeatherSummary from './intents/WeatherSummary';
+import CheapestDate from './intents/CheapestDate';
 import BotMessage from '@/components//BotMessage';
 /*
 import PricePrediction  from './intents/PricePrediction';
@@ -34,6 +36,8 @@ const IntentComponents = {
 	GENERAL_CHAT: GeneralChat,
 	INTENT_FALLBACK: IntentFallback,
 	PRICE_ANALYSIS: PriceTrendSection,
+	WEATHER_SUMMARY: WeatherSummary,
+	CHEAPEST_DATE: CheapestDate,
 	
 	
 	/* PRICE_PREDICTION:   PricePrediction,

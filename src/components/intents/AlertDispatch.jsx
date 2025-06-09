@@ -2,10 +2,6 @@ import React, { useState } from 'react';
 
 export default function AlertComposer({ userId, defaultPayload, onClose }) {
   console.log("✅ 받은 defaultPayload:", defaultPayload);
-  // defaultPayload가 없을 경우 대비 (방어 코드)
-  if (!defaultPayload) {
-    return <p className="p-4 text-sm text-red-500">❌ 가격 알림 정보가 제공되지 않았습니다.</p>;
-  }
 
   const [threshold, setThreshold] = useState(defaultPayload?.price_threshold || '');
   const [loading, setLoading] = useState(false);
@@ -26,7 +22,7 @@ export default function AlertComposer({ userId, defaultPayload, onClose }) {
     };
 
     try {
-      const res = await fetch('http://localhost:8000/price/track', {
+      const res = await fetch('http://3.145.175.131/price/track', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
