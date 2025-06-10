@@ -61,7 +61,7 @@ export default function ChatPage() {
     setIsLoading(true);
     try {
       const res = await fetch(
-        `http://3.145.175.131/flights/search?origin=${origin}&destination=${destination}&departure_date=${date}&adults=${adults}&currencyCode=KRW`
+        `https://www.bookie-travel.xyz/flights/search?origin=${origin}&destination=${destination}&departure_date=${date}&adults=${adults}&currencyCode=KRW`
       );
       const data = await res.json();
       const list = Array.isArray(data) ? data : data.data;

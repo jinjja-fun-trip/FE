@@ -2,7 +2,7 @@
 
 export async function logMessageToBackend(sessionId, role, message) {
     try {
-      const res = await fetch("http://3.145.175.131/chat/log", {
+      const res = await fetch("https://www.bookie-travel.xyz/chat/log", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

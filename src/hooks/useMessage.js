@@ -5,7 +5,7 @@ export default function useMessage(sessionId, userId) {
 
 	// 1) 초기 로드: chat list 불러오기
 	useEffect(() => {
-		fetch(`http://3.145.175.131/chat/messages/?user_id=${userId}`,
+		fetch(`https://www.bookie-travel.xyz/chat/messages/?user_id=${userId}`,
             {method: 'GET', headers: { 'Content-Type': 'application/json' }}
         )
 			.then((res) => res.json())
@@ -27,7 +27,7 @@ export default function useMessage(sessionId, userId) {
 			loading: true,  // ✅ 로딩 표시용
 		};
 		setMessageList(prev => [...prev, userMessage]);
-		fetch('http://3.145.175.131/chat/message', {
+		fetch('https://www.bookie-travel.xyz/chat/message', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({ user_id: userId, message: text }),

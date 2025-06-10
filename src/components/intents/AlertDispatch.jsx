@@ -22,7 +22,7 @@ export default function AlertComposer({ userId, defaultPayload, onClose }) {
     };
 
     try {
-      const res = await fetch('http://3.145.175.131/price/track', {
+      const res = await fetch('https://www.bookie-travel.xyz/price/track', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
