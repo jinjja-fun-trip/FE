@@ -11,15 +11,14 @@ export default function AlertComposer({ userId, defaultPayload, onClose }) {
     setLoading(true);
 
     const body = {
-      user_id: userId,
-      search_params: {
-        origin: defaultPayload.origin,
-        destination: defaultPayload.destination,
-        departure_date: defaultPayload.departure_date,
-        //currency: "KRW",
+      "user_id":12,
+      "search_params": {
+        "origin": "ICN",
+        "destination": "HND",
+        "departure_date": "2025-06-15"
       },
-      price_threshold: parseInt(threshold, 10),
-    };
+      "price_threshold": 150000
+    }
 
     try {
       const res = await fetch('https://www.bookie-travel.xyz/price/track', {
