@@ -19,8 +19,8 @@ export default function IntentAlertDispatch({ contents }) {
         userId={userId}
         defaultPayload={{
             email: email,
-            origin: payload.origin,
-            destination: payload.dest,
+            origin: "ICN",             // 임시 테스트용
+            destination: "HND",
             departure_date: payload.departure_date,
             price_threshold: payload.price_threshold,
             selling_price: payload.selling_price,
