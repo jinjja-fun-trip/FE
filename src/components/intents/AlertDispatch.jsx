@@ -16,7 +16,7 @@ export default function AlertComposer({ userId, defaultPayload, onClose }) {
         origin: defaultPayload.origin,
         destination: defaultPayload.destination,
         departure_date: defaultPayload.departure_date,
-        currency: "KRW",
+        //currency: "KRW",
       },
       price_threshold: parseInt(threshold, 10),
     };
