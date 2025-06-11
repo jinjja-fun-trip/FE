@@ -13,13 +13,14 @@ export default function AlertComposer({ userId, defaultPayload, onClose }) {
     const body = {
       user_id: userId,
       search_params: {
-        origin: "ICN",
-        destination: "LAX",
+        origin: defaultPayload.origin,
+        destination: defaultPayload.destination,
         departure_date: defaultPayload.departure_date,
         //currency: "KRW",
       },
       price_threshold: parseInt(threshold, 10),
     };
+    console.log("📦 POST /price/track 보낼 body:", JSON.stringify(body, null, 2));
 
     try {
       const res = await fetch('https://www.bookie-travel.xyz/price/track', {
