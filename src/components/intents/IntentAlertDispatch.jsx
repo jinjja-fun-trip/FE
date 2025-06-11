@@ -20,7 +20,7 @@ export default function IntentAlertDispatch({ contents }) {
         defaultPayload={{
             email: email,
             origin: payload.origin,
-            destination: payload.dest, // ✅ 여기!
+            destination: payload.destination,
             departure_date: payload.departure_date,
             price_threshold: payload.price_threshold,
             selling_price: payload.selling_price,
