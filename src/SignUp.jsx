@@ -13,7 +13,7 @@ export default function UserRegister() {
 
   const handleRegister = async () => {
     try {
-      const res = await fetch("http://3.138.36.245:8000/users/", {
+      const res = await fetch("https://bookie-travel.xyz/users/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password: pw }),
