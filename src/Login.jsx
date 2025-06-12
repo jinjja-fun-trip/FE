@@ -12,7 +12,7 @@ export default function UserLogin() {
 
   const handleLogin = async () => {
     try {
-      const res = await fetch("https://www.bookie-travel.xyz/users/login", {
+      const res = await fetch("http://3.138.36.245:8000/users/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password: pw }),

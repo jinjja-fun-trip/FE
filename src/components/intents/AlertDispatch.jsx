@@ -23,7 +23,7 @@ export default function AlertComposer({ userId, defaultPayload, onClose }) {
     console.log("📦 POST /price/track 보낼 body:", JSON.stringify(body, null, 2));
 
     try {
-      const res = await fetch('https://www.bookie-travel.xyz/price/track', {
+      const res = await fetch('http://3.138.36.245:8000/price/track', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),

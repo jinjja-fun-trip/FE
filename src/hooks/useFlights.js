@@ -10,7 +10,7 @@ export default function useFlights() {
     setIsLoading(true);
     try {
       const res = await fetch(
-        `https://www.bookie-travel.xyz/flights/search?origin=${origin}&destination=${destination}&departure_date=${date}&adults=${adults}&currencyCode=KRW`
+        `http://3.138.36.245:8000/flights/search?origin=${origin}&destination=${destination}&departure_date=${date}&adults=${adults}&currencyCode=KRW`
       );
       const data = await res.json();
       const flights = Array.isArray(data) ? data : data.data;
@@ -25,7 +25,7 @@ export default function useFlights() {
   };
 
   const createFlight = async (payload) => {
-    return fetch('https://www.bookie-travel.xyz/flights/', {
+    return fetch('http://3.138.36.245:8000/flights/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
@@ -33,7 +33,7 @@ export default function useFlights() {
   };
 
   const updateFlight = async (flightId, payload) => {
-    return fetch(`https://www.bookie-travel.xyz/flights/${flightId}`, {
+    return fetch(`http://3.138.36.245:8000/flights/${flightId}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
