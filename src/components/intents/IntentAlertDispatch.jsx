@@ -21,7 +21,7 @@ export default function IntentAlertDispatch({ contents }) {
             email: email,
             origin: "ICN",             // 임시 테스트용
             destination: "HND",
-            departure_date: "2025-06-15",
+            departure_date: "2025-07-15",
             price_threshold: 150000,
             selling_price: payload.selling_price,
         }}
