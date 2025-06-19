@@ -97,7 +97,7 @@ export default function ChatPage() {
     const summaryText = summaryArray.join('\n');
   
     // 메시지로는 그대로 남기고
-    addMessage(summaryText);
+    //addMessage(summaryText);
   
     // AlertComposer 띄우기 위한 정보 저장
     setAlertFlightInfo({
@@ -122,6 +122,18 @@ export default function ChatPage() {
     const airline = first.carrierCode;
     const seatCount = flight.numberOfBookableSeats;
     const stopInfo = segments.length === 1 ? "직항" : `${segments.length - 1}회 경유`;
+
+    return [
+      "✅ 선택한 항공편 정보입니다:",
+      `🛫 ${first.departure.iataCode} → 🛬 ${last.arrival.iataCode}`,
+      `출발: ${new Date(first.departure.at).toLocaleString()}`,
+      `도착: ${new Date(last.arrival.at).toLocaleString()}`,
+      `항공사: ${airline}`,
+      `비행 시간: ${hour}시간 ${min}분`,
+      `잔여 좌석: ${seatCount !== undefined ? seatCount + "석" : "정보 없음"}`,
+      `경유 정보: ${stopInfo}`,
+      `가격: ${price}`,
+    ];
   };
   const sortFlights = (flights) => {
     return [...flights].sort((a, b) => {
