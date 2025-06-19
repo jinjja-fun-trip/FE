@@ -1,15 +1,8 @@
 import React from 'react';
 
-function formatDateForKayak(dateString) {
-  const [datePart] = dateString.split('T');
-  const [year, month, day] = datePart.split("-");
-  return `${year.slice(2)}${month}${day}`;
-}
-
-function makeBookingUrl(origin, destination, departureDate, returnDate) {
-  const dep = formatDateForKayak(departureDate);
-  const rtn = formatDateForKayak(returnDate || departureDate);
-  return `https://www.kayak.co.kr/flights/${origin}-${destination}/${dep}/${rtn}?sort=bestflight_a`;
+function makeBookingUrl(origin, destination, departureDate) {
+  const date = departureDate.replaceAll("-", ""); // 2025-07-01 → 20250701
+  return `https://www.skyscanner.co.kr/transport/flights/${origin}/${destination}/${date}/?adults=1`;
 }
 
 export default function CheapestDate({ message, cards }) {
