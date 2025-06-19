@@ -1,5 +1,5 @@
 import React from 'react';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Ellipsis } from "lucide-react";
 
 // Intent별 컴포넌트 import
