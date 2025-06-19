@@ -94,9 +94,11 @@ function LoadingBubble() {
 		  return (
 			<div key={session_id} className="flex flex-col gap-2">
 			  {/* 🕒 타임스탬프 */}
-			  {/*<div className="flex justify-center">
-				<span className="text-xs text-gray-400">{time}</span>
-			  </div>*/}
+			  {message && (
+        		<div className="flex justify-center">
+          			<span className="text-xs text-gray-400">{time}</span>
+        		</div>
+      		  )}
   
 			  {/* 🙋 사용자 메시지 */}
 			  <div className="flex justify-end">
