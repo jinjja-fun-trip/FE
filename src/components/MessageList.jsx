@@ -63,7 +63,19 @@ function LoadingBubble() {
 
   export default function MessageList({ messageList }) {
 	const messageEndRef = useRef(null);
-  
+	const [todayDate, setTodayDate] = useState("");
+
+	// ✅ 컴포넌트 첫 렌더링 시 오늘 날짜 한 번만 계산
+	useEffect(() => {
+	  const today = new Date().toLocaleDateString('ko-KR', {
+		year: 'numeric',
+		month: 'long',
+		day: 'numeric',
+		weekday: 'short',
+	  });
+	  setTodayDate(today);
+	}, []);
+
 	// ✅ 메시지 업데이트 시 자동 스크롤
 	useEffect(() => {
 	  if (messageEndRef.current) {
@@ -74,7 +86,10 @@ function LoadingBubble() {
 	return (
 	  <div className="flex flex-col p-5 gap-6 overflow-y-auto h-[calc(100vh-160px)]"> {/* height 조절 필요 시 이 값을 수정 */}
 		{messageList.map(({ session_id, message, answer, timestamp, loading }) => {
-		  const time = new Date(timestamp).toLocaleString('ko-KR');
+		    {/* ✅ 오늘 날짜 한 번만 출력 */}
+			<div className="flex justify-center">
+				<span className="text-sm text-gray-400">{todayDate}</span>
+			</div>
   
 		  // ✅ 응답 컴포넌트 결정
 		  let AnswerComponent = null;
