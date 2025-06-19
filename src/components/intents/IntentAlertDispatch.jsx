@@ -28,7 +28,7 @@ export default function IntentAlertDispatch({ contents }) {
             destination: payload.dest,
             departure_date: payload.departure_date,
             price_threshold: payload.price_threshold,
-            selling_price: fixedSellingPrice,
+            selling_price: 0,
         }}
         onClose={() => {}}
     />
