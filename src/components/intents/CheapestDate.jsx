@@ -52,7 +52,7 @@ export default function CheapestDate({ message, cards }) {
             </p>
 
             <a
-              href={makeBookingUrl(card.route.split("-")[0], card.route.split("-")[1], card.arrival)}
+              href={makeBookingUrl(card.route.split("-")[0], card.route.split("-")[1], card.departure)}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block w-full text-center bg-sky-500 text-white text-sm font-semibold py-2 rounded-lg hover:bg-sky-600 transition"
