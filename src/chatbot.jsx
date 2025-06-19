@@ -101,6 +101,7 @@ export default function ChatPage() {
   
     // AlertComposer 띄우기 위한 정보 저장
     setAlertFlightInfo({
+      email: emailId,
       origin: flight.itineraries[0].segments[0].departure.iataCode,
       destination: flight.itineraries[0].segments.slice(-1)[0].arrival.iataCode,
       departure_date: flight.itineraries[0].segments[0].departure.at.slice(0, 10), // YYYY-MM-DD
