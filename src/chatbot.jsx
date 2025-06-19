@@ -65,6 +65,7 @@ export default function ChatPage() {
       );
       const data = await res.json();
       const list = Array.isArray(data) ? data : data.data;
+      console.log("flight data: ", list);
       setFlightResults(list);
       setShowFlightForm(false);
     } catch (err) {

@@ -13,8 +13,8 @@ export default function useFlights() {
         `https://bookie-travel.xyz/flights/search?origin=${origin}&destination=${destination}&departure_date=${date}&adults=${adults}&currencyCode=KRW`
       );
       const data = await res.json();
-      console.log("flight data", data);
       const flights = Array.isArray(data) ? data : data.data;
+      console.log("flight data: ", flights);
       setFlightResults(flights);
       return flights;
     } catch (err) {
