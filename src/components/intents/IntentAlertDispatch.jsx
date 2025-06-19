@@ -13,7 +13,12 @@ export default function IntentAlertDispatch({ contents }) {
   if (!payload) {
     return <p className="p-4 text-sm text-red-500">❌ 가격 알림 정보가 제공되지 않았습니다.</p>;
   }
-
+  const fixedSellingPrice =
+  payload.dest === "KIX"
+    ? 37800
+    : payload.dest === "KUL"
+    ? 167800
+    : payload.selling_price;
   return (
     <AlertComposer
         userId={userId}
@@ -23,7 +28,7 @@ export default function IntentAlertDispatch({ contents }) {
             destination: payload.dest,
             departure_date: payload.departure_date,
             price_threshold: payload.price_threshold,
-            selling_price: payload.selling_price,
+            selling_price: fixedSellingPrice,
         }}
         onClose={() => {}}
     />
