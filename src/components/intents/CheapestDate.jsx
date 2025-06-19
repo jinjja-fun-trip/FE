@@ -1,8 +1,20 @@
 import React from 'react';
 
-function makeBookingUrl(origin, destination, departureDate) {
-  const date = departureDate.replaceAll("-", ""); // 2025-07-01 → 20250701
-  return `https://www.skyscanner.co.kr/transport/flights/${origin}/${destination}/${date}/?adults=1`;
+function extractDateOnly(datetimeString) {
+  // "2025-06-30T23:35:00.000Z" → "2025-06-30"
+  return datetimeString.split("T")[0];
+}
+
+function formatDateForSkyscanner(dateString) {
+  // "2025-06-30" → "20250630"
+  return dateString.replace(/-/g, "");
+}
+
+function makeBookingUrl(origin, destination, departureDateTime) {
+  const dateOnly = extractDateOnly(departureDateTime);         // "2025-06-30"
+  const formattedDate = formatDateForSkyscanner(dateOnly);     // "20250630"
+
+  return `https://www.skyscanner.co.kr/transport/flights/${origin}/${destination}/${formattedDate}/?adults=1`;
 }
 
 export default function CheapestDate({ message, cards }) {
