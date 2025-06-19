@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 export default function AlertComposer({ userId, defaultPayload, onClose }) {
-  console.log("✅ 받은 ㄹㅎㄹdefaultPayload:", defaultPayload);
+  //console.log("✅ 받은 ㄹㅎㄹdefaultPayload:", defaultPayload);
 
   const [threshold, setThreshold] = useState(defaultPayload?.price_threshold || '');
   const [loading, setLoading] = useState(false);

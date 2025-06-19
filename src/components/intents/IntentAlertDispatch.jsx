@@ -1,7 +1,7 @@
 import AlertComposer from './AlertDispatch';
 
 export default function IntentAlertDispatch({ contents }) {
-  console.log("✅ 받은 contents:", contents); // 👈 로그 찍어보기
+  //console.log("✅ 받은 contents:", contents); // 👈 로그 찍어보기
 
   const payload = contents?.payload;
 
