@@ -151,7 +151,7 @@ export default function ChatPage() {
       <div className="w-[180px] flex flex-col justify-between bg-white shadow-sm px-4 py-6">
         <div className="flex flex-col items-center gap-6">
           <img src="/bookie-logo.png" alt="Bookie 로고" className="h-20" />
-          {["항공권 조회", "예약 조회", "예약하기", "예약 취소", "기타"].map((opt) => (
+          {["항공권 조회"].map((opt) => (
             <button
               key={opt}
               onClick={() => handleOptionClick(opt)}
