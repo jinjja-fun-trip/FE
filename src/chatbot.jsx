@@ -111,7 +111,18 @@ export default function ChatPage() {
     setShowAlertComposer(true);
   };
 
-
+  const getFlightSummaryText = (flight) => {
+    const segments = flight.itineraries[0].segments;
+    const first = segments[0];
+    const last = segments[segments.length - 1];
+    const duration = flight.itineraries[0].duration.match(/PT(?:(\d+)H)?(?:(\d+)M)?/);
+    const hour = duration?.[1] || "0";
+    const min = duration?.[2] || "0";
+    const price = `₩${parseFloat(flight.price.total).toLocaleString()}`;
+    const airline = first.carrierCode;
+    const seatCount = flight.numberOfBookableSeats;
+    const stopInfo = segments.length === 1 ? "직항" : `${segments.length - 1}회 경유`;
+  };
   const sortFlights = (flights) => {
     return [...flights].sort((a, b) => {
       if (sortOption === "price") {
