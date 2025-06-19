@@ -111,30 +111,7 @@ export default function ChatPage() {
     setShowAlertComposer(true);
   };
 
-  const getFlightSummaryText = (flight) => {
-    const segments = flight.itineraries[0].segments;
-    const first = segments[0];
-    const last = segments[segments.length - 1];
-    const duration = flight.itineraries[0].duration.match(/PT(?:(\d+)H)?(?:(\d+)M)?/);
-    const hour = duration?.[1] || "0";
-    const min = duration?.[2] || "0";
-    const price = `₩${parseFloat(flight.price.total).toLocaleString()}`;
-    const airline = first.carrierCode;
-    const seatCount = flight.numberOfBookableSeats;
-    const stopInfo = segments.length === 1 ? "직항" : `${segments.length - 1}회 경유`;
 
-    return [
-      "✅ 선택한 항공편 정보입니다:",
-      `🛫 ${first.departure.iataCode} → 🛬 ${last.arrival.iataCode}`,
-      `출발: ${new Date(first.departure.at).toLocaleString()}`,
-      `도착: ${new Date(last.arrival.at).toLocaleString()}`,
-      `항공사: ${airline}`,
-      `비행 시간: ${hour}시간 ${min}분`,
-      `잔여 좌석: ${seatCount !== undefined ? seatCount + "석" : "정보 없음"}`,
-      `경유 정보: ${stopInfo}`,
-      `가격: ${price}`,
-    ];
-  };
   const sortFlights = (flights) => {
     return [...flights].sort((a, b) => {
       if (sortOption === "price") {
