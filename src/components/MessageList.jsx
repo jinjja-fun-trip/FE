@@ -74,7 +74,14 @@ function LoadingBubble() {
 	return (
 	  <div className="flex flex-col p-5 gap-6 overflow-y-auto h-[calc(100vh-160px)]"> {/* height 조절 필요 시 이 값을 수정 */}
 		{messageList.map(({ session_id, message, answer, timestamp, loading }) => {
-		  const time = new Date(timestamp).toLocaleString('ko-KR');
+		  const time = new Date(timestamp).toLocaleString("ko-KR", {
+			timeZone: "Asia/Seoul",      // 💡 명시적으로 한국 시간대 설정
+			year: 'numeric',
+			month: 'long',
+			day: 'numeric',
+			hour: '2-digit',
+			minute: '2-digit'
+		  });
   
 		  // ✅ 응답 컴포넌트 결정
 		  let AnswerComponent = null;
