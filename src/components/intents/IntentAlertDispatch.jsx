@@ -22,7 +22,7 @@ export default function IntentAlertDispatch({ contents }) {
             origin: payload.origin,             // 임시 테스트용
             destination: payload.dest,
             departure_date: payload.departure_date,
-            price_threshold: 150000,
+            price_threshold: payload.price_threshold,
             selling_price: payload.selling_price,
         }}
         onClose={() => {}}
