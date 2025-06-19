@@ -10,6 +10,7 @@ export default function useMessage(sessionId, userId) {
         )
 			.then((res) => res.json())
 			.then((data) => {
+				console.log("📥 전체 메시지 응답 확인:", data.messages.map(m => m.session_id));
 				const sorted = (data.messages ?? []).sort((a, b) => a.session_id - b.session_id);
 				setMessageList(sorted);
 			})
