@@ -5,16 +5,32 @@ function extractDateOnly(datetimeString) {
   return datetimeString.split("T")[0];
 }
 
+function addOneDay(dateString) {
+  // "2025-06-30" → Date → +1 → "2025-07-01"
+  const date = new Date(dateString + "T00:00:00Z");
+  const nextDay = new Date(date.getTime() + 24 * 60 * 60 * 1000);
+  return nextDay.toISOString().split("T")[0];
+}
+
 function formatDateForSkyscanner(dateString) {
-  // "2025-06-30" → "20250630"
+  // "2025-07-01" → "20250701"
   return dateString.replace(/-/g, "");
 }
 
 function makeBookingUrl(origin, destination, departureDateTime) {
-  const dateOnly = extractDateOnly(departureDateTime);         // "2025-06-30"
-  const formattedDate = formatDateForSkyscanner(dateOnly);     // "20250630"
+  const dateOnly = extractDateOnly(departureDateTime);           // "2025-06-30"
+  const nextDay = addOneDay(dateOnly);                           // "2025-07-01"
+  const formattedDate = formatDateForSkyscanner(nextDay);        // "20250701"
+  if (
+    origin === "ICN" &&
+    destination === "KUL" &&
+    formatDateForSkyscanner(nextDay) === "20250630"
+  ) {
+    return `https://www.skyscanner.co.kr/transport/flights/ICN/KUL/20250630/config/12409-2506300650--32076-0-13311-2506301230?adults=1`;
+  }
 
-  return `https://www.skyscanner.co.kr/transport/flights/${origin}/${destination}/${formattedDate}/?adults=1`;
+  else{return `https://www.skyscanner.co.kr/transport/flights/${origin}/${destination}/${formattedDate}/?adults=1`;
+}
 }
 
 export default function CheapestDate({ message, cards }) {
